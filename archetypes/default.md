@@ -7,17 +7,17 @@ keywords: []
 description: ""
 tags: []
 categories: []
-author: ""
+author: "heguangfu"
 
 # You can also close(false) or open(true) something for this content.
 # P.S. comment can only be closed
-comment: false
-toc: false
-autoCollapseToc: false
-postMetaInFooter: false
+comment: true
+toc: true
+autoCollapseToc: true
+postMetaInFooter: true
 hiddenFromHomePage: false
 # You can also define another contentCopyright. e.g. contentCopyright: "This is another copyright."
-contentCopyright: false
+contentCopyright: <img src="https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png"><br/>感谢阅读，如果有问题请您留言，我会及时改正<br/> 本博客所有原创文章版权归hgf所有，转载请注明出处hgfdodo.win/blog
 reward: false
 mathjax: false
 mathjaxEnableSingleDollar: false

@@ -11,17 +11,17 @@ author: "heguangfu"
 
 # You can also close(false) or open(true) something for this content.
 # P.S. comment can only be closed
-comment: false
-toc: false
-autoCollapseToc: false
-postMetaInFooter: false
+comment: true
+toc: true
+autoCollapseToc: true
+postMetaInFooter: true
 hiddenFromHomePage: false
 # You can also define another contentCopyright. e.g. contentCopyright: "This is another copyright."
-contentCopyright: false
+contentCopyright: <img src="https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png"><br/>感谢阅读，如果有问题请您留言，我会及时改正<br/> 本博客所有原创文章版权归hgf所有，转载请注明出处hgfdodo.win/blog
 reward: false
-mathjax: false
-mathjaxEnableSingleDollar: false
-mathjaxEnableAutoNumber: false
+mathjax: true
+mathjaxEnableSingleDollar: true
+mathjaxEnableAutoNumber: true
 
 # You unlisted posts you might want not want the header or footer to show
 hideHeaderAndFooter: false
@@ -45,11 +45,13 @@ typora-root-url: ../../static
 
 
 
-###### 如何使用typora编写Hugo draft
+# 如何使用typora编写Hugo draft
+
+本文主要讲解如何使用typora编写hugo 文章，达到本地编辑实时预览，和真正部署的结果一致。
 
 <!--more-->
 
-####### Hugo 目录结构
+## Hugo 目录结构
 
 
 ```
