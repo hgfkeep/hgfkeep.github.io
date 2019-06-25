@@ -33,7 +33,7 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_TOKEN  # Set in travis-ci.org dashboard, marked secure
   email: $GITHUB_EMAIL
-  name: $GITHUB_USERNAME
+  name: $GITHUB_USER
   verbose: true
   keep-history: true
   local-dir: public
