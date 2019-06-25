@@ -1,7 +1,7 @@
 baseURL = "https://hgfkeep.github.io"
 languageCode = "zh-cn"
 defaultContentLanguage = "zh-cn"                             # en / zh-cn / ... (This field determines which i18n file to use)
-title = "HGF - hello friend |"
+title = "hgf"
 preserveTaxonomyNames = true
 enableRobotsTXT = true
 enableEmoji = true
@@ -59,7 +59,7 @@ copyright = "所有全归hgf所有，转载请注明出处hgfkeep.hithub.io"    
   gitRepo = ""
 
   # site info (optional)                                  # 站点信息（可选，不需要的可以直接注释掉）
-  logoTitle = "hgfkeep - hello friend |"        # default: the title value    # 默认值: 上面设置的title值
+  logoTitle = "hgfkeep - hello friend "                   # default: the title value    # 默认值: 上面设置的title值
   keywords = ["Hugo", "theme","even"]
   description = "heguangfu's blog for sharing"
 
