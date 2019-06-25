@@ -1,5 +1,5 @@
 ---
-title: "How to Write Draft in Hugo"
+title: "如何使用typora编写Hugo draft"
 date: 2019-06-25T16:33:26+08:00
 lastmod: 2019-06-25T16:33:26+08:00
 draft: false
@@ -24,7 +24,7 @@ mathjaxEnableSingleDollar: true
 mathjaxEnableAutoNumber: true
 
 # You unlisted posts you might want not want the header or footer to show
-hideHeaderAndFooter: false
+hideHeaderAndFooter: true
 
 # You can enable or disable out-of-date content warning for individual post.
 # Comment this out to use the global config.
@@ -45,7 +45,7 @@ typora-root-url: ../../static
 
 
 
-# 如何使用typora编写Hugo draft
+
 
 本文主要讲解如何使用typora编写hugo 文章，达到本地编辑实时预览，和真正部署的结果一致。
 
