@@ -48,6 +48,14 @@ typora-root-url: ../../static
 3. github部署静态博客。
 4. travis-ci 持续集成和部署。
 
+## 有用的链接
+
+1. [hugo](https://gohugo.io/)
+2. [github](https://github.com/)
+3. [docker hub](https://cloud.docker.com/)
+4. [asciidoctor](https://asciidoctor.org)
+5. [travis](https://travis-ci.com/)
+
 ## 博客配置
 
 主要配置hugo和asciidoctor的触发协同构建。
