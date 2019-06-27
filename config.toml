@@ -74,9 +74,14 @@ disqusShortname = "hgfkeep"
         url = "/posts/"
 
         [[languages.zh-cn.menu.main]]
-        name = "工程"
+        name = "分类"
         weight = 3
-        url = "/projects/"
+        url = "/categories/"
+
+        [[languages.zh-cn.menu.main]]
+        name = "系列"
+        weight = 4
+        url = "/series/"
 
         [[languages.zh-cn.menu.main]]
         name = "联系我"
