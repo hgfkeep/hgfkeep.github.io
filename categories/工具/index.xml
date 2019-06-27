@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>工具 on HGFKEEP</title>
+    <link>https://hgfkeep.github.io/categories/%E5%B7%A5%E5%85%B7/</link>
+    <description>Recent content in 工具 on HGFKEEP</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 25 Jun 2019 16:33:26 +0800</lastBuildDate>
+    
+	<atom:link href="https://hgfkeep.github.io/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何使用typora编写Hugo draft</title>
+      <link>https://hgfkeep.github.io/post/how-to-write-draft-in-hugo/</link>
+      <pubDate>Tue, 25 Jun 2019 16:33:26 +0800</pubDate>
+      
+      <guid>https://hgfkeep.github.io/post/how-to-write-draft-in-hugo/</guid>
+      <description>&lt;p&gt;本文主要讲解如何使用typora编写hugo 文章，达到本地编辑实时预览，和真正部署的结果一致。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何使用typora编写Hugo draft</title>
+      <link>https://hgfkeep.github.io/posts/how-to-write-draft-in-hugo/</link>
+      <pubDate>Tue, 25 Jun 2019 16:33:26 +0800</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/how-to-write-draft-in-hugo/</guid>
+      <description>&lt;p&gt;本文主要讲解如何使用typora编写hugo 文章，达到本地编辑实时预览，和真正部署的结果一致。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

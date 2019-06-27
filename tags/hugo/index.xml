@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hugo on HGFKEEP</title>
+    <link>https://hgfkeep.github.io/tags/hugo/</link>
+    <description>Recent content in hugo on HGFKEEP</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 26 Jun 2019 19:54:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://hgfkeep.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>hugo静态博客</title>
+      <link>https://hgfkeep.github.io/posts/hugo-blog/</link>
+      <pubDate>Wed, 26 Jun 2019 19:54:00 +0800</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/hugo-blog/</guid>
+      <description>使用hugo创建博客  使用 hugo + asciidoc(tor)实现静态博客、代码高亮、图标等。 hugo site构建使用镜像完成。 github部署静态博客。 travis-ci 持续集成和部署。  博客样式 思路 hugo external helpers 提供外部格式化支持。通过官网给出的文档和hugo的源代码，知道hugo是根据文件后缀使用external helpers取格式化文件。
+文件起始的头部描述信息和markdnwon一样。
+ 使用external helpers时，必须安装对应的工具，比如hugo+asciidoc(tor)就需要安装asciidoc(tor)。
+ 所以需要使用hugo + asciidoc(tor)编译文档时，只需要将文件后缀改成asciidoc,adoc或者ad，hugo在构建site的时候，会自动的调用外部工具编译文件。
+external helpers支持情况 各类型文件后缀主持如下：
+ markdown的文件：  md markdown markdown  asciidoc文件：  asciidoc adoc ad  mmark文件：  mmark  rst文件：  rdt  html文件：  htm html   配置样式 编辑hugo 根目录下面的config.toml，添加Custom CSS。
+ 不同的hugo主题，Custom CSS配置的相对路径也不一样。有的是相对的statis/，有的是相对的static/css。
+ custom css包含两个部分：
+ 代码高亮。 警告、icon fonts和其他样式。  我的Custom CSS配置：custom_css = [&amp;quot;css/code.</description>
+    </item>
+    
+    <item>
+      <title>An Article</title>
+      <link>https://hgfkeep.github.io/posts/x/</link>
+      <pubDate>Wed, 17 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/x/</guid>
+      <description>    There are things to note!
+     public static void main( String args[] ) { System.out.println(&#34;Foobar!&#34;); (1) }     1 Print something    </description>
+    </item>
+    
+    <item>
+      <title>Hugo coder wiki</title>
+      <link>https://hgfkeep.github.io/posts/hugo-coder-wiki/</link>
+      <pubDate>Thu, 17 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/hugo-coder-wiki/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dummy</title>
+      <link>https://hgfkeep.github.io/posts/dummy/</link>
+      <pubDate>Mon, 31 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/dummy/</guid>
+      <description>Nada para ver aqui!</description>
+    </item>
+    
+    <item>
+      <title>Getting Started with Hugo</title>
+      <link>https://hgfkeep.github.io/posts/hugoisforlovers/</link>
+      <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/hugoisforlovers/</guid>
+      <description>Step 1. Install Hugo Goto hugo releases and download the appropriate version for your os and architecture.
+Save it somewhere specific as we will be using it in the next step.
+More complete instructions are available at installing hugo
+Step 2. Build the Docs Hugo has its own example site which happens to also be the documentation site you are reading right now.
+Follow the following steps:
+ Clone the hugo repository Go into the repo Run hugo in server mode and build the docs Open your browser to http://localhost:1313  Corresponding pseudo commands:</description>
+    </item>
+    
+  </channel>
+</rss>

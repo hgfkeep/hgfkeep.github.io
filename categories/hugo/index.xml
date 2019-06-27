@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hugo on HGFKEEP</title>
+    <link>https://hgfkeep.github.io/categories/hugo/</link>
+    <description>Recent content in Hugo on HGFKEEP</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 26 Jun 2019 19:54:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://hgfkeep.github.io/categories/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>hugo静态博客</title>
+      <link>https://hgfkeep.github.io/posts/hugo-blog/</link>
+      <pubDate>Wed, 26 Jun 2019 19:54:00 +0800</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/hugo-blog/</guid>
+      <description>使用hugo创建博客  使用 hugo + asciidoc(tor)实现静态博客、代码高亮、图标等。 hugo site构建使用镜像完成。 github部署静态博客。 travis-ci 持续集成和部署。  博客样式 思路 hugo external helpers 提供外部格式化支持。通过官网给出的文档和hugo的源代码，知道hugo是根据文件后缀使用external helpers取格式化文件。
+文件起始的头部描述信息和markdnwon一样。
+ 使用external helpers时，必须安装对应的工具，比如hugo+asciidoc(tor)就需要安装asciidoc(tor)。
+ 所以需要使用hugo + asciidoc(tor)编译文档时，只需要将文件后缀改成asciidoc,adoc或者ad，hugo在构建site的时候，会自动的调用外部工具编译文件。
+external helpers支持情况 各类型文件后缀主持如下：
+ markdown的文件：  md markdown markdown  asciidoc文件：  asciidoc adoc ad  mmark文件：  mmark  rst文件：  rdt  html文件：  htm html   配置样式 编辑hugo 根目录下面的config.toml，添加Custom CSS。
+ 不同的hugo主题，Custom CSS配置的相对路径也不一样。有的是相对的statis/，有的是相对的static/css。
+ custom css包含两个部分：
+ 代码高亮。 警告、icon fonts和其他样式。  我的Custom CSS配置：custom_css = [&amp;quot;css/code.</description>
+    </item>
+    
+  </channel>
+</rss>
