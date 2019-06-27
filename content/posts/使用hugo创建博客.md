@@ -1,5 +1,5 @@
 ---
-title: "如何使用typora编写Hugo draft"
+title: "使用hugo创建博客"
 date: 2019-06-25T16:33:26+08:00
 lastmod: 2019-06-25T16:33:26+08:00
 draft: false
