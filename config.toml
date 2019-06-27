@@ -84,36 +84,3 @@ disqusShortname = "hgfkeep"
         url = "/contact/"
 
 
-    [languages.en]
-        languagename = "English"
-        title = "heguangfu"
-
-        [languages.en.params]
-            author = "heguangfu"
-            info = "base on java, like to try new tech"
-            description = "Heguagnfu's personal website"
-            keywords = "dev,cs,arrow"
-            footercontent = "lucky to meet you - jxn！"
-
-        [languages.en.menu]
-
-            [[languages.en.menu.main]]
-            name = "About"
-            weight = 1
-            url = "/en/about/"
-
-            [[languages.en.menu.main]]
-            name = "Blog"
-            weight = 2
-            url = "/en/posts/"
-
-            [[languages.en.menu.main]]
-            name = "Projetos"
-            weight = 3
-            url = "/en/projects/"
-
-            [[languages.en.menu.main]]
-            name = "Contato"
-            weight = 5
-            url = "/en/contact/"
-
