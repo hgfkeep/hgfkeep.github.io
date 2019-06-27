@@ -1,4 +1,4 @@
-baseurl = "http://hgfkeep.github.io"
+baseurl = "https://hgfkeep.github.io"
 title = "HGFKEEP"
 
 theme = "hugo-coder"
