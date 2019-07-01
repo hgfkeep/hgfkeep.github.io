@@ -12,11 +12,11 @@
     
     
     <item>
-      <title>Test</title>
-      <link>https://hgfkeep.github.io/posts/test/</link>
+      <title>asciidoctor格式</title>
+      <link>https://hgfkeep.github.io/posts/asciidoctor%E6%A0%BC%E5%BC%8F/</link>
       <pubDate>Wed, 26 Jun 2019 12:21:02 +0800</pubDate>
       
-      <guid>https://hgfkeep.github.io/posts/test/</guid>
+      <guid>https://hgfkeep.github.io/posts/asciidoctor%E6%A0%BC%E5%BC%8F/</guid>
       <description>格式化文本 加粗斜体等宽 加粗斜体等宽可组合叠加
  例如：
  _italic phrase_ __i__talic le__tt__ers *bold phrase* **b**old le**tt**ers *_bold italic phrase_* **__b__**old italic le**__tt__**ers `monospace phrase` and le``tt``ers `_monospace italic phrase_` and le``__tt__``ers `*monospace bold phrase*` and le``**tt**``ers `*_monospace bold italic phrase_*` and le``**__tt__**``ers   italic phrase
