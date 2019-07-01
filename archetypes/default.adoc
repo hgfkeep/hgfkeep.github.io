@@ -1,4 +1,4 @@
-+++ 
+---
 draft = true
 title: "{{ replace .TranslationBaseName "-" " " | title }}"
 date: {{ .Date }}
@@ -8,6 +8,7 @@ keywords: []
 description: ""
 tags: []
 categories: []
+series: []
 author: "heguangfu"
 
 # You can also close(false) or open(true) something for this content.
@@ -22,11 +23,12 @@ contentCopyright: <img src="https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png"
 
 typora-root-url: ../../static
 
-+++
+---
 
 :source-highlighter: rouge
 :rouge-style: molokai
 :icons: font
+:sectanchors: 
 :plantuml-server-url: "http://plantuml.com/plantuml"
 
 

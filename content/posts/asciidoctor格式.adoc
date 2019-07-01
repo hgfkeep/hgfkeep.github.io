@@ -1,0 +1,276 @@
+---
+title: "asciidoctor格式"
+date: 2019-06-26T12:21:02+08:00
+lastmod: 2019-06-26T12:21:02+08:00
+draft: false
+keywords: []
+description: ""
+tags: []
+categories: []
+author: "heguangfu"
+
+---
+
+:source-highlighter: rouge
+:rouge-style: molokai
+:icons: font
+:plantuml-server-url: "http://plantuml.com/plantuml"
+:sectanchors:
+
+
+## 格式化文本
+
+### 加粗斜体等宽
+
+加粗斜体等宽可**组合叠加**
+
+例如：
+
+```asciidoc
+
+_italic phrase_
+
+__i__talic le__tt__ers
+
+*bold phrase*
+
+**b**old le**tt**ers
+
+*_bold italic phrase_*
+
+**__b__**old italic le**__tt__**ers
+
+`monospace phrase` and le``tt``ers
+
+`_monospace italic phrase_` and le``__tt__``ers
+
+`*monospace bold phrase*` and le``**tt**``ers
+
+`*_monospace bold italic phrase_*` and le``**__tt__**``ers
+
+```
+
+_italic phrase_
+
+__i__talic le__tt__ers
+
+*bold phrase*
+
+**b**old le**tt**ers
+
+*_bold italic phrase_*
+
+**__b__**old italic le**__tt__**ers
+
+`monospace phrase` and le``tt``ers
+
+`_monospace italic phrase_` and le``__tt__``ers
+
+`*monospace bold phrase*` and le``**tt**``ers
+
+`*_monospace bold italic phrase_*` and le``**__tt__**``ers
+
+
+### 高亮
+
+```
+Werewolves are #allergic to cinnamon#.
+```
+
+
+Werewolves are #allergic to cinnamon#.
+
+
+### 字体大小
+
+```
+Do werewolves believe in [small]#small print#?
+
+[big]##O##nce upon an infinite loop.
+```
+
+Do werewolves believe in [small]#small print#?
+
+[big]##O##nce upon an infinite loop.
+
+### 上角下角
+
+```
+^super^script phrase
+
+~sub~script phrase
+```
+
+^super^script phrase
+
+~sub~script phrase
+
+
+## 警告
+
+书写内容：
+
+```asciidoctor,linenums
+NOTE: 这是一个NOTE信息
+
+TIP: 提示信息
+
+IMPORTANT: 重要信息..
+
+WARNING: 警告信息
+
+CAUTION: 注意信息
+
+```
+
+展示结果如下：
+
+NOTE: 这是一个NOTE信息
+
+TIP: 提示信息
+
+IMPORTANT: 重要信息..
+
+WARNING: 警告信息
+
+CAUTION: 注意信息
+
+---
+
+还可添加侧边栏：
+
+```asciidoctor,linenums
+[NOTE]
+====
+There are things to note!
+====
+```
+
+输出结果如下：
+
+[NOTE]
+====
+There are things to note!
+====
+
+---
+
+## 代码块
+
+### 代标注的代码块
+
+```java,linenums
+public static void main( String args[] ) {
+    System.out.println("Foobar!"); <1>
+}
+```
+<1> Print something
+
+
+## 画图
+
+参考地址： https://asciidoctor.org/docs/asciidoctor-diagram/[asciidoctor-diagram]
+
+### ditaa
+
+```
+[ditaa]
+....
+                   +-------------+
+                   | Asciidoctor |-------+
+                   |   diagram   |       |
+                   +-------------+       | PNG out
+                       ^                 |
+                       | ditaa in        |
+                       |                 v
+ +--------+   +--------+----+    /---------------\
+ |        | --+ Asciidoctor +--> |               |
+ |  Text  |   +-------------+    |   Beautiful   |
+ |Document|   |   !magic!   |    |    Output     |
+ |     {d}|   |             |    |               |
+ +---+----+   +-------------+    \---------------/
+     :                                   ^
+     |          Lots of work             |
+     +-----------------------------------+
+....
+```
+
+效果：
+
+[ditaa]
+....
+                   +-------------+
+                   | Asciidoctor |-------+
+                   |   diagram   |       |
+                   +-------------+       | PNG out
+                       ^                 |
+                       | ditaa in        |
+                       |                 v
+ +--------+   +--------+----+    /---------------\
+ |        | --+ Asciidoctor +--> |               |
+ |  Text  |   +-------------+    |   Beautiful   |
+ |Document|   |   !magic!   |    |    Output     |
+ |     {d}|   |             |    |               |
+ +---+----+   +-------------+    \---------------/
+     :                                   ^
+     |          Lots of work             |
+     +-----------------------------------+
+....
+
+### plantuml
+
+
+
+```
+[plantuml, diagram-classes, png]     
+....
+class BlockProcessor
+class DiagramBlock
+class DitaaBlock
+class PlantUmlBlock
+
+BlockProcessor <|-- DiagramBlock
+DiagramBlock <|-- DitaaBlock
+DiagramBlock <|-- PlantUmlBlock
+....
+```
+
+效果：
+
+[plantuml, diagram-classes, png]     
+....
+class BlockProcessor
+class DiagramBlock
+class DitaaBlock
+class PlantUmlBlock
+
+BlockProcessor <|-- DiagramBlock
+DiagramBlock <|-- DitaaBlock
+DiagramBlock <|-- PlantUmlBlock
+....
+
+## 文件操作
+
+### 文档属性
+
+WARNING: 文档属性只适用asciidoc(tor)! 不兼容markdown！
+
+
+- `:sectnums:` 文章的标题级别使用数字表示
+- `:sectanchors:` 设置文章自链接
+
+### 包含文件
+
+包含文件会直接在构建后的结果文件中展示加入包含的文件内容。
+
+`include::hgf.adoc[]`
+
+
+从URL中链接
+
+
+`:asciidoctor-source: https://raw.githubusercontent.com/asciidoctor/asciidoctor/master include::{asciidoctor-source}/README.adoc[]`
+
+## 参考文档
+
+https://asciidoctor.cn/docs/[asciidoctor官方文档]

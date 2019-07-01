@@ -21,9 +21,9 @@ disqusShortname = "hgfkeep"
     keywords = "dev,designer"
     info = "welcome!"
     avatarurl = "images/avatar.jpg"
-    footercontent = "遇见你是我的幸运-jxn<br /><img src='https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png'>"
+    footercontent = "<div style='padding:2px'><div style='font-weight: bold;'>遇见你是我的幸运-jxn❤️</div><br />感谢阅读，如果有问题请您留言<br /></div><div style=''><img src='https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png'> </div>"
 
-    dateformat = "2019-06-26"
+    dateformat = "2006-01-02"
 
     hideCredits = false
     hideCopyright = false
