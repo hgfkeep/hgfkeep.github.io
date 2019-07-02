@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="heguangfu">
+    <meta name="description" content="一条河流分割了过去和未来">
+    <meta name="keywords" content="dev,designer">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java性能分析工具"/>
+<meta name="twitter:description" content="性能分析的前提是将程序的运行状况以及应用的运行环境状况以一种可视化的方式直接的展示出来，那如何实现可视化的展示呢？
+本文主要从操作系统提供的工具、java内置的工具和java mission control介绍java性能分析工具。
+操作系统工具 操作系统中的工具并非是只针对java的，适合所有程序。
+在操作系统中，利用工具收集系统中的各类资源的监控数据，包括：
+ CPU 内存 磁盘 网络  只有收集的数据更充分，新能测试的结果才会更准确。
+CPU使用率 CPU使用时间分为：
+ 用户时间（User Time）：CPU执行用户应用程序的时间 系统时间（System Time）：CPU执行操作系统内核代码的时间。一般与硬件资源打交道，都需要执行内核代码，例如从磁盘读取数据、发送网络请求等。  CPU的调优目标是单位时间内最大限度的提高CPU利用率。
+分析思路 在linux操作系统中，执行 vmstat 5, 结果如下：
+procs -----------memory--------------- ----swap---- ---io--- -----system------ ----------CPU------- r b swpd free buff cache si so bi bo in cs us sy id wa st 2 0 236456 2259632 200052 730348 0 0 1 6 1 1 37 8 55 0 0 2 0 236456 2259624 200052 730348 0 0 0 10 179 332 40 7 53 0 0 2 0 236456 2259624 200052 730348 0 0 0 20 180 356 56 7 37 0 0 从输出结果可知，第一次输出的5s内，CPU一共执行 $ (37\% &#43; 8\%) * 5s=2."/>
+
+    <meta property="og:title" content="Java性能分析工具" />
+<meta property="og:description" content="性能分析的前提是将程序的运行状况以及应用的运行环境状况以一种可视化的方式直接的展示出来，那如何实现可视化的展示呢？
+本文主要从操作系统提供的工具、java内置的工具和java mission control介绍java性能分析工具。
+操作系统工具 操作系统中的工具并非是只针对java的，适合所有程序。
+在操作系统中，利用工具收集系统中的各类资源的监控数据，包括：
+ CPU 内存 磁盘 网络  只有收集的数据更充分，新能测试的结果才会更准确。
+CPU使用率 CPU使用时间分为：
+ 用户时间（User Time）：CPU执行用户应用程序的时间 系统时间（System Time）：CPU执行操作系统内核代码的时间。一般与硬件资源打交道，都需要执行内核代码，例如从磁盘读取数据、发送网络请求等。  CPU的调优目标是单位时间内最大限度的提高CPU利用率。
+分析思路 在linux操作系统中，执行 vmstat 5, 结果如下：
+procs -----------memory--------------- ----swap---- ---io--- -----system------ ----------CPU------- r b swpd free buff cache si so bi bo in cs us sy id wa st 2 0 236456 2259632 200052 730348 0 0 1 6 1 1 37 8 55 0 0 2 0 236456 2259624 200052 730348 0 0 0 10 179 332 40 7 53 0 0 2 0 236456 2259624 200052 730348 0 0 0 20 180 356 56 7 37 0 0 从输出结果可知，第一次输出的5s内，CPU一共执行 $ (37\% &#43; 8\%) * 5s=2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hgfkeep.github.io/posts/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B7%A5%E5%85%B7/" />
+<meta property="article:published_time" content="2019-06-30T17:53:59&#43;08:00"/>
+<meta property="article:modified_time" content="2019-06-30T17:53:59&#43;08:00"/><meta property="og:see_also" content="https://hgfkeep.github.io/posts/java_stack%E4%BF%A1%E6%81%AF/" />
+<meta property="og:see_also" content="https://hgfkeep.github.io/posts/java_stack%E4%BF%A1%E6%81%AF/" />
+
+
+
+    
+      <base href="https://hgfkeep.github.io/posts/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B7%A5%E5%85%B7/">
+    
+    <title>
+  Java性能分析工具 · HGFKEEP
+</title>
+
+    
+      <link rel="canonical" href="https://hgfkeep.github.io/posts/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B7%A5%E5%85%B7/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://hgfkeep.github.io/css/coder.min.8250817d137d64c86ccdb5c74bfdfe88dab7a379d377512a5239dc149ac33dc2.css" integrity="sha256-glCBfRN9ZMhszbXHS/3&#43;iNq3o3nTd1EqUjncFJrDPcI=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://hgfkeep.github.io/css/code.css" />
+    
+      <link rel="stylesheet" href="https://hgfkeep.github.io/css/custom.css" />
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://hgfkeep.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://hgfkeep.github.io/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.55.6" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://hgfkeep.github.io">
+      HGFKEEP
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/about/">关于</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/posts/">博客</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/categories/">分类</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/series/">系列</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/contact/">联系我</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Java性能分析工具</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-06-30T17:53:59&#43;08:00'>
+                2019-06-30
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+
+<p>性能分析的前提是将程序的运行状况以及应用的运行环境状况以一种可视化的方式直接的展示出来，那如何实现可视化的展示呢？</p>
+
+<p>本文主要从操作系统提供的工具、java内置的工具和java mission control介绍java性能分析工具。</p>
+
+<h2 id="操作系统工具">操作系统工具</h2>
+
+<p>操作系统中的工具并非是只针对java的，适合所有程序。</p>
+
+<p>在操作系统中，利用工具收集系统中的各类资源的监控数据，包括：</p>
+
+<ul>
+<li>CPU</li>
+<li>内存</li>
+<li>磁盘</li>
+<li>网络</li>
+</ul>
+
+<p>只有收集的数据更充分，新能测试的结果才会更准确。</p>
+
+<h3 id="cpu使用率">CPU使用率</h3>
+
+<p>CPU使用时间分为：</p>
+
+<ol>
+<li>用户时间（User Time）：CPU执行用户应用程序的时间</li>
+<li>系统时间（System Time）：CPU执行操作系统内核代码的时间。一般与硬件资源打交道，都需要执行内核代码，例如从磁盘读取数据、发送网络请求等。</li>
+</ol>
+
+<p><strong>CPU的调优目标是单位时间内最大限度的提高CPU利用率。</strong></p>
+
+<h4 id="分析思路">分析思路</h4>
+
+<p>在linux操作系统中，执行 <code>vmstat 5</code>, 结果如下：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">procs -----------memory--------------- ----swap---- ---io--- -----system------ ----------CPU-------
+r b swpd    free     buff cache  si so bi bo in  cs  us sy id wa st
+2 0 236456 2259632 200052 730348 0  0  1  6  1   1   37 8  55 0  0
+2 0 236456 2259624 200052 730348 0  0  0  10 179 332 40 7  53 0  0
+2 0 236456 2259624 200052 730348 0  0  0  20 180 356 56 7  37 0  0</pre></div>
+<p>从输出结果可知，第一次输出的5s内，CPU一共执行 $ (37\% + 8\%) * 5s=2.25s $ ，其中 $37\%$ 执行用户应用程序，$8\%$ 执行系统代码；剩余的 $2.75s$ 处于空闲状态。</p>
+
+<p>一般有三种原因造成CPU闲置：
+1. 应用程序被线程的同步操作阻塞，直到锁释放。需要合理的减少锁竞争；减少锁的范围
+2. 应用程序在等待某些请求的响应，例如查询数据。优化请求响应方
+3. 应用程序无事可做，例如<code>sleep</code>，等待请求。加大应用程序的负载</p>
+
+<h4 id="java程序和cpu使用率">java程序和CPU使用率</h4>
+
+<h5 id="有固定作业量的批处理程序">有固定作业量的批处理程序</h5>
+
+<p>对于有固定作业量的批处理程序，除非作业全部处理，否则CPU不应该有闲置时间。提高CPU利用率可以加快作业处理效率。</p>
+
+<h5 id="接受请求的服务端程序">接受请求的服务端程序</h5>
+
+<p>在没有请求到来，CPU处于闲置状态。当请求到来时，才会利用CPU处理请求。接受请求的服务端程序表现出来的是：特定时间间隔内，CPU利用率较高，其他情况下，CPU利用率较低。此时，可以<strong>采取增加程序负载的方式来提升CPU利用率</strong>。</p>
+
+<h5 id="多线程池应用程序">多线程池应用程序</h5>
+
+<p><strong>调优多线程程序的目标依然是尽可能的提高每个 CPU 的使用率，使 CPU 尽可能少的被阻塞。</strong></p>
+
+<p>最典型的例子为一个拥有固定大小线程池的应用程序运行数量变化的任务。每个线程每次只能处理一个任务，如果此线程被某些操作阻塞，这个线程不能转而去处理另一个任务。在这种情况下就会出现没有可用线程来处理未完成的任务。因此会导致 CPU 处于闲置状态。</p>
+
+<h4 id="cpu-run-queue">CPU Run Queue</h4>
+
+<p>当前<strong>可以执行任务的线程数</strong>称为run queue。linux中，run queue并长度为当前正在运行和可以运行的线程数，这个长度最小为1；windows中，processor queue并不包括正在运行的线程数，这个数字可以为0。</p>
+
+<p>例如上面的输出中第一行输出的<code>r</code>表示run queue的长度。</p>
+
+<h3 id="磁盘使用率">磁盘使用率</h3>
+
+<p>监控硬盘使用率有两个重要的目标：</p>
+
+<ol>
+<li>应用程序本身，如果应用程序进行了非常多的硬盘 I/O 操作，很容易推断出应用程序的性能瓶颈在于 I/O。
+
+<ol>
+<li>当应用程序<strong>没有高效地使用缓存</strong>来进行硬盘写操作时，硬盘 I/O 非常低。</li>
+<li>当应用程序进行的 <strong>I/O 操作数超出了硬盘能够处理的数量</strong>，硬盘 I/O 非常高。</li>
+</ol></li>
+<li>系统是否在进行交换（swapping）</li>
+</ol>
+
+<p>在linux中执行<code>iostat -xm 5</code> ，我的结果如下：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">avg-CPU: %user %nice %system %iowait %steal %idle
+				 18.20 0.00   40.20   0.00    0.00   51.60
+Device: rrqm/s wrqm/s r/s  w/s   rMB/s wMB/s avgrq-sz avgqu-sz await svctm %util 
+sda     0.00   0.20   0.00 34.60 0.10  0.23  8.35     0.00    5.04  0.04   2.02</pre></div>
+<p>磁盘写入等待时间为5.04ms，磁盘的使用率2.02%， 但是系统执行内核操作用掉了40.02%的时间，这意味着应用程序中存在着低效的写操作。系统每秒进行 $34.60(w/s)$ 次写操作，但是只写入了 $0.23MB(wMB/s)$ 数据。可以判断是IO的性能瓶颈。</p>
+
+<p>再看一组数据：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">avg-CPU: %user %nice %system %iowait %steal %idle
+          40.20 0.00  5.70    49.81    0.00  54.10
+Device: rrqm/s wrqm/s r/s   w/s    rMB/s wMB/s avgrq-sz avgqu-sz await   svctm %util 
+sda     0.00   0.20   0.00  134.60 0.10  60.45 727.24    68.46   798.04  5.67  100</pre></div>
+<p>磁盘的利用率100%，等待磁盘的时间（<code>iowait</code>）占到了$49.81%$，应用程序每秒写入 $60.45mb$ 数据，这些数据共同证明 <strong>I/O 是应用程序的性能瓶颈所在，必须减少如此大量的 I/O 操作</strong>。</p>
+
+<p><code>vmstat</code> 命令的结果中 <code>si</code>，<code>so</code> 两列数据表示了<strong>换入物理内存</strong>和<strong>换出物理内存</strong>的数据量。通过这些数据可以知道系统是否在进行交换。</p>
+
+<h3 id="网络使用率">网络使用率</h3>
+
+<p>网络传输类似于硬盘传输，<strong>低效地使用网络传输会造成网络带宽不足</strong>；如果<strong>网络传输的数据量超过了其所能负载的上限同样会造成网络传输性能瓶颈</strong>。</p>
+
+<p>操作系统内置的网络监控工具只能获得某个网络接口<strong>接收和发送的包数和字节数</strong>。通过这些信息还不足以确定网络负载正常还是负载过大。</p>
+
+<p>unix的基本网络工具是<code>netstat</code>。<code>netstat -i 5</code>可以查看网络发送质量。</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">Kernel Interface table
+Iface      MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+enp2s0f0  1500 39259342994      2      0 0      36119926214      0      0      0 BMRU
+enp2s0f1  1500        0      0      0 0             0      0      0      0 BMU
+lo       65536 107482004336      0      0 0      107482004336      0      0      0 LRU
+virbr0    1500        0      0      0 0             0      0      0      0 BMU
+enp2s0f0  1500 39259351171      2      0 0      36119927505      0      0      0 BMRU
+enp2s0f1  1500        0      0      0 0             0      0      0      0 BMU
+lo       65536 107482004938      0      0 0      107482004938      0      0      0 LRU
+virbr0    1500        0      0      0 0             0      0      0      0 BMU</pre></div>
+<p>其中看网卡enp2s0f0第一次输出（输出结果表示网卡启动后，总共接收/发送的数据包）， <code>RX-OK=39259342994</code>表示正确收到了39259342994个数据包， <code>RX-ERR=2</code>表示有2个数据包错误；<code>TX-OK=36119926214</code>表示正确发送了36119926214个数据包。所以，enp2s0f0接收数据包速率 $(39259351171-39259342994)/5=1635p/s$， 接收数据包 $(36119927505 - 36119926214 )/5=258p/s$ ，但是netstat需要通过网络带宽自行计算网络使用率。</p>
+
+<p><code>nicstat</code> 是unix中使用广泛的第三方网络监控工具，可以得到网络接口的使用率。</p>
+
+<p><code>nicstat 5</code> 的结果如下：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">Time      Int    rKB/s wKB/s rPk/s wPk/s rAvs  wAvs %Util Sat 
+17:05:17 e1000g1 156.4 256.9 875.0 909.5 215.4 175.3 2.98 0.00</pre></div>
+<p>可知网络利用率<code>2.98%</code>。</p>
+
+<blockquote>
+<p>网络传输无法支撑 100%的使用率，在<strong>本地以太网网络，超过 40%的使用率就被认为接口饱和</strong>。</p>
+</blockquote>
+
+<h3 id="linux系统性能监控工具汇总">linux系统性能监控工具汇总</h3>
+
+<p><img src="https://hgfkeep.github.io/img/java性能优化工具/linux_perf_tools_full.png" alt="linux_perf_tools_full" /></p>
+
+<h2 id="java内置工具">java内置工具</h2>
+
+<ul>
+<li>jcmd：打印一个 <strong>Java 进程的类，线程以及虚拟机信息</strong>。适合用在脚本中。使用 jcmd - h 来查看使用方法。</li>
+<li>jconsole：提供 <strong>JVM 活动的图形化展示，包括线程使用，类使用以及垃圾回收（GC）信息</strong>。</li>
+<li>jhat：帮助<strong>分析内存堆存储</strong>。</li>
+<li>jmap：提供 <strong>JVM 内存使用信息</strong>，适用于脚本中。</li>
+<li>jinfo：访问 <strong>JVM 系统属性</strong>，同时可以<strong>动态修改</strong>这些属性。</li>
+<li>jstack：提供 Java 进程内的<strong>线程堆栈信息</strong>。</li>
+<li>jstat：提供 <strong>Java 垃圾回收以及类加载信息</strong>。</li>
+<li>jvisualvm：监控 JVM 的可视化工具，剖析运行中的应用程序，分析 JVM 堆存储。</li>
+</ul>
+
+<h3 id="信息角度">信息角度</h3>
+
+<h4 id="jvm-基本信息">JVM 基本信息</h4>
+
+<ol>
+<li>运行时间：<code>jcmd &lt;pid&gt; VM.uptime</code></li>
+<li>JVM系统属性：
+
+<ol>
+<li><code>jcmd &lt;pid&gt; VM.system_properties</code></li>
+<li><code>jinfo –sysprops &lt;pid&gt;</code></li>
+</ol></li>
+<li>JVM 版本：<code>jcmd &lt;pid&gt; VM.version</code></li>
+<li>JVM 启动命令: <code>jcmd &lt;pid&gt; VM.command_line</code></li>
+<li>JVM 调优参数：
+
+<ol>
+<li><code>jcmd &lt;pid&gt; VM.flags [-all]</code></li>
+<li>jinfo查看某个参数的值： <code>jinfo -flag &lt;flag_name&gt; &lt;pid&gt;</code> ， 例如：<code>jinfo -flag PrintGCDetails &lt;pid&gt;</code></li>
+<li>jinfo 使某个参数生效： <code>jinfo -flag +&lt;flag_name&gt; &lt;pid&gt;</code> ， 例如：<code>jinfo -flag +PrintGCDetails &lt;pid&gt;</code></li>
+<li>jinfo 使某个参数失效:  <code>jinfo -flag -&lt;flag_name&gt; &lt;pid&gt;</code> ， 例如：<code>jinfo -flag -PrintGCDetails &lt;pid&gt;</code></li>
+</ol></li>
+</ol>
+
+<blockquote>
+<p>尽管 <code>jinfo</code> 命令可以改变任何 flag 的值，但不能确定 JVM 会接受这些改变。例如很多影响垃圾回收算法执行的 flag 都会在 <strong>JVM 启动时被设置</strong>，在 JVM 运行过程中通过 <code>jinfo</code> 命令修改 flag 的值并不会影响算法执行。</p>
+
+<p>执行命令<code>java -XX:+PrintFlagsFinal | grep manageable</code>或者 <code>jcmd &lt;pid&gt; VM.flags -all|grep manageable</code> 可查看可动态修改的flag参数。</p>
+</blockquote>
+
+<h4 id="线程信息">线程信息</h4>
+
+<ol>
+<li>JVM栈信息（可明确某个线程是否阻塞）：
+
+<ol>
+<li><code>jstack &lt;pid&gt;</code></li>
+<li><code>jcmd &lt;pid&gt; Thread.print</code></li>
+</ol></li>
+<li>jconsole/jvisualvm也可以获取运行中的JVM线程信息。</li>
+</ol>
+
+<h4 id="类信息">类信息</h4>
+
+<p><code>jconsole</code> 和 <code>jstat</code> 命令可以获得应用程序<strong>运行过程中的所有类的相关信息</strong>，同时 <code>jstat</code> 命令也提供了<strong>类编译</strong>的相关信息。</p>
+
+<ol>
+<li>加载的class数量：<code>jstat -class &lt;pid&gt;</code>，输出的结果含义：
+
+<ol>
+<li>Loaded： 加载的类数量；</li>
+<li>Bytes：加载的类占用的字节数；</li>
+<li>Unloaded：卸载的类数量；</li>
+<li>Bytes： 卸载的类型的字节数；</li>
+<li>Time：类加载和卸载使用的时间，单位<code>s</code></li>
+</ol></li>
+<li>实时编译的信息： <code>jstat -compiler &lt;pid&gt;</code>， 输出结果含义：
+
+<ol>
+<li>Compiled：编译数量</li>
+<li>Failed：失败数量</li>
+<li>Invalid：不可用数量</li>
+<li>Time：编译费时，单位s</li>
+<li>FailedType：最近一次编译的方法的编译类型</li>
+<li>FailedMethod：编译失败的方法，包括全限定类和类中的方法。</li>
+</ol></li>
+</ol>
+
+<p>例如：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ jstat -class <span style="color:#ff0;font-weight:bold">23935</span>
+Loaded  Bytes  Unloaded  Bytes     Time
+ <span style="color:#ff0;font-weight:bold">16973</span> <span style="color:#ff0;font-weight:bold">30885</span>.1        <span style="color:#ff0;font-weight:bold">0</span>    <span style="color:#ff0;font-weight:bold">0</span>.0      <span style="color:#ff0;font-weight:bold">26</span>.84</code></pre></div>
+<p>加载了16973个类，总共30885.1字节，费时26.84s。</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ jstat -compiler <span style="color:#ff0;font-weight:bold">23935</span>
+Compiled Failed Invalid   Time   FailedType FailedMethod
+   <span style="color:#ff0;font-weight:bold">16175</span>      <span style="color:#ff0;font-weight:bold">4</span>       <span style="color:#ff0;font-weight:bold">0</span>   <span style="color:#ff0;font-weight:bold">208</span>.10          <span style="color:#ff0;font-weight:bold">1</span>  com/mysql/jdbc/AbandonedConnectionCleanupThread run</code></pre></div>
+<h4 id="垃圾回收相关信息">垃圾回收相关信息</h4>
+
+<p>垃圾回收操作与系统的内存和JVM内存使用情况息息相关，需要使用一下工具监控和调优内存使用。</p>
+
+<ul>
+<li>Jconsole 展示了 JVM 堆使用的情况，它所绘制的的<strong>动态图</strong>能够帮助开发人员了解堆的内部情况。</li>
+<li>jmap 提供<strong>堆信息总览</strong>。
+
+<ul>
+<li>jmap获取堆内存使用情况：<code>jmap -heap &lt;pid&gt;</code></li>
+</ul></li>
+<li>jmap获取堆中对象数量和大小：<code>jmap -histo &lt;pid&gt;</code>
+
+<ul>
+<li>jmap dump堆内存：<code>jmap -dump:format=b,file=heapdump &lt;pid&gt;</code> (此操作会导致JVM <strong>暂停应用</strong>)</li>
+<li>jmap 对象finalization信息：<code>jmap &lt;pid&gt; -finalizerinfo</code></li>
+</ul></li>
+<li>jstat 从不同的角度<strong>展示垃圾回收是如何工作</strong>的。
+
+<ul>
+<li>查看垃圾回收情况：<code>jstat -gcutil &lt;pid&gt; [interval] [counts]</code></li>
+</ul></li>
+<li>jcmd 支持<strong>JFR</strong>。
+
+<ul>
+<li>创建heap dump: <code>jcmd &lt;pid&gt; GC.heap_dump filename=&lt;path/to/filename&gt;</code>，与jmap dump操作类似。</li>
+<li>执行Finalizer：<code>jcmd &lt;pid&gt; GC.run_finalization</code>相当于<code>System.runFinalization()</code></li>
+<li>主动GC：<code>jcmd &lt;pid&gt; GC.run</code>相当于<code>System.gc()</code></li>
+</ul></li>
+</ul>
+
+<h4 id="heap-dump-文件及其分析">Heap Dump 文件及其分析</h4>
+
+<p>Heap Dump 文件是堆的快照，对于分析内存泄漏和内存优化有重要的作用。</p>
+
+<p>获取heap dump ：</p>
+
+<ol>
+<li>jvisualvm 用户界面可以得到 Heap Dump 文件</li>
+<li><code>jcmd</code>：<code>jcmd &lt;pid&gt; GC.heap_dump filename=&lt;path/to/filename&gt;</code></li>
+<li><code>jmap</code> ：<code>jmap -dump:format=b,file=heapdump &lt;pid&gt;</code></li>
+</ol>
+
+<p>分析heap dump：</p>
+
+<ol>
+<li>jvisualvm</li>
+<li><code>jhat</code> ：<code>jhat &lt;heap_dump_file&gt;</code>。自动解析堆转储文件并启动webserver，默认端口7000</li>
+</ol>
+
+<h4 id="jfr定位性能问题">JFR定位性能问题</h4>
+
+<p>JFR文件生成参考本文中<strong>工具使用角度/jcmd</strong>。</p>
+
+<ul class="task-list">
+<li><label><input type="checkbox" disabled class="task-list-item"> 待完成</label></li>
+</ul>
+
+<h3 id="工具使用角度">工具使用角度</h3>
+
+<h4 id="jstat">jstat</h4>
+
+<p>jstat(JVM Statistics Monitoring Tool)是用于监控虚拟机各种运行状态信息的命令行工具。他可以显示本地或远程虚拟机进程中的<strong>类装载、内存、垃圾收集、JIT编译</strong>等运行数据，在没有GUI图形的服务器上，它是运行期定位虚拟机性能问题的首选工具。</p>
+
+<p>jstat官方文档地址：<a href="https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstat.html">https://docs.oracle.com/javase/7/docs/technotes/tools/share/jstat.html</a></p>
+
+<p>jstat支持的options：</p>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>class</td>
+<td>类加载器</td>
+</tr>
+
+<tr>
+<td>compiler</td>
+<td>JIT</td>
+</tr>
+
+<tr>
+<td>gc</td>
+<td>GC堆状态</td>
+</tr>
+
+<tr>
+<td>gccapacity</td>
+<td>各区大小</td>
+</tr>
+
+<tr>
+<td>gccause</td>
+<td>最近一次GC统计和原因</td>
+</tr>
+
+<tr>
+<td>gcnew</td>
+<td>新区统计</td>
+</tr>
+
+<tr>
+<td>gcnewcapacity</td>
+<td>新区大小</td>
+</tr>
+
+<tr>
+<td>gcold</td>
+<td>老区统计</td>
+</tr>
+
+<tr>
+<td>gcoldcapacity</td>
+<td>老区大小</td>
+</tr>
+
+<tr>
+<td>gcpermcapacity</td>
+<td>永久区大小</td>
+</tr>
+
+<tr>
+<td>gcutil</td>
+<td>GC统计汇总</td>
+</tr>
+
+<tr>
+<td>printcompilation</td>
+<td>HotSpot编译统计</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="jmap">jmap</h4>
+
+<p>jmap是JDK自带的工具软件，主要用于打印指定Java进程(或核心文件、远程调试服务器)的共享对象内存映射或<strong>堆内存细节</strong>。可以使用jmap生成Heap Dump。</p>
+
+<p>jmap官方文档地址：<a href="https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html">https://docs.oracle.com/javase/7/docs/technotes/tools/share/jmap.html</a></p>
+
+<p><strong>内存泄漏检查</strong>：</p>
+
+<ol>
+<li>先使用<code>jmap -heap</code>命令查看堆的使用情况，看一下各个堆空间的占用情况；</li>
+<li>使用<code>jmap -histo:[live]</code>查看堆内存中的对象的情况。如果有大量对象在持续被引用，并没有被释放掉，那就产生了内存泄露，就要结合代码，把不用的对象释放掉。</li>
+</ol>
+
+<p>查看<strong>等待fianlizer的对象</strong>：<code>jmap &lt;pid&gt; -finalizerinfo</code></p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ jmap -finalizerinfo <span style="color:#ff0;font-weight:bold">2895</span>
+Attaching to process ID <span style="color:#ff0;font-weight:bold">2895</span>, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is <span style="color:#ff0;font-weight:bold">25</span>.151-b12
+Number of objects pending <span style="color:#fff;font-weight:bold">for</span> finalization: <span style="color:#ff0;font-weight:bold">1</span></code></pre></div>
+<blockquote>
+<p>JVM会将整个heap的信息dump写入到一个文件，heap如果比较大的话，就会导致这个过程比较耗时，并且执行的过程中为了保证dump的信息是可靠的，所以会<strong>暂停应用</strong>。</p>
+
+<p><strong><code>jmap -histo:live</code> 这个命令执行，JVM会先触发gc，然后再统计信息。</strong></p>
+</blockquote>
+
+<h4 id="jhat">jhat</h4>
+
+<p>jhat用来帮助<strong>分析堆转储文件</strong>。</p>
+
+<ol>
+<li><p><code>jhat &lt;heap_dump_file&gt;</code>。自动解析堆转储文件并启动webserver，默认端口7000</p></li>
+
+<li><p>比较两个转储文件的变化：<code>jhat &lt;heap_dump_file&gt; —baseline &lt;exclude_heap_dump_file&gt;</code></p></li>
+</ol>
+
+<p>jhat web页面的最下面支持了其他的查询：</p>
+
+<p><img src="https://hgfkeep.github.io/img/java性能优化工具/jhat输出.png" alt="jhat输出" /></p>
+
+<blockquote>
+<p>jhat还提供了OQL查询语言，OQL语句的执行页面: <a href="http://localhost:7000/oql/。">http://localhost:7000/oql/。</a></p>
+</blockquote>
+
+<h4 id="jstack">jstack</h4>
+
+<p>jstack用于<strong>生成java虚拟机当前时刻的线程快照</strong>。线程快照是当前java虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是<strong>定位线程出现长时间停顿的原因，如线程间死锁、死循环、请求外部资源导致的长时间等待</strong>等。</p>
+
+<p>如果java程序崩溃生成core文件，jstack工具可以用来获得core文件的java stack和native stack的信息，从而可以轻松地知道java程序是如何崩溃和在程序何处发生问题。</p>
+
+<p>用法：</p>
+
+<ol>
+<li>获取JVM快照：<code>jstack  &lt;pid&gt;</code>，
+
+<ol>
+<li><code>-l</code>参数可以支持更多的信息。</li>
+</ol></li>
+<li>jstack处理core文件：<code>jstack java &lt;core-file&gt;</code>。其中java可能需要知名java文件的路径。
+
+<ol>
+<li><code>-m</code>配置jstack mixed模式，支持处理jvm stack frame和native stack frame。</li>
+<li><code>-l</code>参数可以支持更多的信息。</li>
+</ol></li>
+</ol>
+
+<blockquote>
+<p>core文件和heap dump文件的区别：</p>
+
+<p>JavaCore文件主要保存的是<strong>Java应用各线程在某一时刻的运行的位置</strong>，即JVM执行到哪一个类、哪一个方法、哪一个行上。它是一个文本文件，打开后可以看到每一个线程的执行栈，以stack trace的显示。通过对JavaCore文件的分析可以得到应用是否“卡”在某一点上，即在某一点运行的时间太长，例如数据库查询，长期得不到响应，最终导致系统崩溃等情况。</p>
+
+<p>HeapDump文件是一个二进制文件，它保存了<strong>某一时刻JVM堆中对象使用情况</strong>，这种文件需要相应的工具进行分析，如IBM Heap Analyzer这类工具。这类文件最重要的作用就是分析系统中是<strong>否存在内存溢出</strong>的情况。</p>
+</blockquote>
+
+<h4 id="jinfo">jinfo</h4>
+
+<p>用途：</p>
+
+<ol>
+<li><p>访问 <strong>JVM 系统属性</strong>，同时可以<strong>动态修改</strong>部分属性。</p></li>
+
+<li><p>可以输出java进程、处理core文件或远程debug服务器的配置信息</p></li>
+</ol>
+
+<p>用法：</p>
+
+<ol>
+<li>打印JVM系统：<code>jinfo -sysprops &lt;pid&gt;</code></li>
+<li>jinfo查看某个参数的值： <code>jinfo -flag &lt;flag_name&gt; &lt;pid&gt;</code> ， 例如：<code>jinfo -flag PrintGCDetails &lt;pid&gt;</code></li>
+<li>jinfo 使某个参数生效： <code>jinfo -flag +&lt;flag_name&gt; &lt;pid&gt;</code> ， 例如：<code>jinfo -flag +PrintGCDetails &lt;pid&gt;</code></li>
+<li>jinfo 使某个参数失效:  <code>jinfo -flag -&lt;flag_name&gt; &lt;pid&gt;</code> ， 例如：<code>jinfo -flag -PrintGCDetails &lt;pid&gt;</code></li>
+</ol>
+
+<blockquote>
+<p>尽管 <code>jinfo</code> 命令可以改变任何 flag 的值，但不能确定 JVM 会接受这些改变。例如很多影响垃圾回收算法执行的 flag 都会在 <strong>JVM 启动时被设置</strong>，在 JVM 运行过程中通过 <code>jinfo</code> 命令修改 flag 的值并不会影响算法执行。</p>
+
+<p>执行命令<code>java -XX:+PrintFlagsFinal | grep manageable</code>或者 <code>jcmd &lt;pid&gt; VM.flags -all|grep manageable</code> 可查看可动态修改的flag参数。</p>
+</blockquote>
+
+<h4 id="jcmd">jcmd</h4>
+
+<p>jcmd 打印一个 <strong>Java 进程的类，线程以及虚拟机信息</strong>。适合用在脚本中。使用 jcmd - h 来查看使用方法。</p>
+
+<p>jcmd的官方地址：<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr006.html">https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr006.html</a></p>
+
+<p>jcmd实用程序用于将诊断命令请求发送到JVM，其中这些请求对于控制Java Flight Recordings，排除故障以及诊断JVM和Java应用程序非常有用。它必须在运行JVM的<strong>同一台机器</strong>上使用，并且具有用于启动JVM的<strong>相同有效用户和组标识符</strong>。</p>
+
+<p>jcmd的用法是:
+<code>jcmd &lt;process id/main class&gt; &lt;command&gt; [options]</code></p>
+
+<p>其中command的说明如下：</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">help</td>
+<td align="left">打印帮助信息，示例：jcmd help []</td>
+</tr>
+
+<tr>
+<td align="left">ManagementAgent.stop</td>
+<td align="left">停止JMX Agent</td>
+</tr>
+
+<tr>
+<td align="left">ManagementAgent.start_local</td>
+<td align="left">开启本地JMX Agent</td>
+</tr>
+
+<tr>
+<td align="left">ManagementAgent.start</td>
+<td align="left">开启JMX Agent</td>
+</tr>
+
+<tr>
+<td align="left">Thread.print</td>
+<td align="left">参数-l打印java.util.concurrent锁信息，相当于：jstack</td>
+</tr>
+
+<tr>
+<td align="left">PerfCounter.print</td>
+<td align="left">相当于：jstat -J-Djstat.showUnsupported=true -snap</td>
+</tr>
+
+<tr>
+<td align="left">GC.class_histogram</td>
+<td align="left">相当于：jmap -histo</td>
+</tr>
+
+<tr>
+<td align="left">GC.heap_dump</td>
+<td align="left">相当于：jmap -dump:format=b,file=xxx.bin</td>
+</tr>
+
+<tr>
+<td align="left">GC.run_finalization</td>
+<td align="left">相当于：System.runFinalization()</td>
+</tr>
+
+<tr>
+<td align="left">GC.run</td>
+<td align="left">相当于：System.gc()</td>
+</tr>
+
+<tr>
+<td align="left">VM.uptime</td>
+<td align="left">参数-date打印当前时间，VM启动到现在的时候，以秒为单位显示</td>
+</tr>
+
+<tr>
+<td align="left">VM.flags</td>
+<td align="left">参数-all输出全部，相当于：jinfo -flags , jinfo -flag</td>
+</tr>
+
+<tr>
+<td align="left">VM.system_properties</td>
+<td align="left">相当于：jinfo -sysprops</td>
+</tr>
+
+<tr>
+<td align="left">VM.command_line</td>
+<td align="left">相当于：jinfo -sysprops</td>
+</tr>
+
+<tr>
+<td align="left">VM.version</td>
+<td align="left">相当于：jinfo -sysprops</td>
+</tr>
+
+<tr>
+<td align="left">JFR.start</td>
+<td align="left">启动JFR</td>
+</tr>
+
+<tr>
+<td align="left">JFR.stop</td>
+<td align="left">停止JFR</td>
+</tr>
+
+<tr>
+<td align="left">JFR.dump</td>
+<td align="left">dump JFR</td>
+</tr>
+
+<tr>
+<td align="left">JFR.check</td>
+<td align="left">检查JFR状态</td>
+</tr>
+</tbody>
+</table>
+
+<p>如果不清楚jcmd支持哪些参数，可以执行：<code>jcmd &lt;pid&gt; help</code></p>
+
+<p>例如：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ jcmd <span style="color:#ff0;font-weight:bold">9592</span> <span style="color:#fff;font-weight:bold">help</span>
+<span style="color:#ff0;font-weight:bold">9592</span>:
+The following commands are available:
+JFR.stop
+JFR.start
+JFR.dump
+JFR.check
+VM.native_memory
+VM.check_commercial_features
+VM.unlock_commercial_features
+ManagementAgent.stop
+ManagementAgent.start_local
+ManagementAgent.start
+GC.rotate_log
+Thread.print
+GC.class_stats
+GC.class_histogram
+GC.heap_dump
+GC.run_finalization
+GC.run
+VM.uptime
+VM.flags
+VM.system_properties
+VM.command_line
+VM.version
+help</code></pre></div>
+<h5 id="jfr">JFR</h5>
+
+<p>JFR：Java Flight Record</p>
+
+<ul>
+<li>启动JFR：<code>jcmd &lt;pid&gt; JFR.start name=&lt;name&gt;</code>，启动<code>name=&lt;name&gt;</code>的JFR。</li>
+<li>检查JFR: <code>jcmd &lt;pid&gt; JFR.check name=&lt;name&gt;</code>，检查<code>name=&lt;name&gt;</code>的JFR。</li>
+<li>dump JFR:  <code>jcmd &lt;pid&gt; JFR.dump name=&lt;name&gt; filename=&lt;filename&gt;.jfr</code>，dump <code>name=&lt;name&gt;</code>的JFR。<strong>文件后缀必须是jfr.</strong></li>
+<li>停止JFR: <code>jcmd &lt;pid&gt; JFR.stop name=&lt;name&gt;</code>， 停止<code>name=&lt;name&gt;</code>的JFR。</li>
+</ul>
+
+<blockquote>
+<p>要使用 JRF 相关的功能，必须使用 <code>VM.unlock_commercial_features</code>参数取消锁定商业功能 。</p>
+</blockquote>
+
+<h4 id="jconsole">jconsole</h4>
+
+<p>jconsole：提供 <strong>JVM 活动的图形化展示，包括线程使用，类使用以及垃圾回收（GC）信息</strong>。</p>
+
+<p>IMPORTANT： 可以远程调试的命令（远程地址：<code>[server_id@]&lt;remote server IP or hostname&gt;</code>）: jinfo, jmpa, jstack, jstat；支持core文件的命令（命令格式<code>命令 &lt;executable&gt; &lt;core&gt;</code>）: jinfo,  jmap, jstack</p>
+
+<h2 id="参考">参考</h2>
+
+<ol>
+<li><a href="http://www.brendangregg.com/linuxperf.html">著名的Linux Performance Observability Tools</a></li>
+</ol>
+
+      </div>
+
+      <footer>
+        
+
+<section class="see-also">
+  
+    
+    
+    
+      <h3>See also in java</h3>
+      <nav>
+        <ul>
+        
+        
+          
+            <li>
+              <a href="https://hgfkeep.github.io/posts/java_stack%E4%BF%A1%E6%81%AF/">Java stack信息</a>
+            </li>
+          
+        
+          
+        
+        </ul>
+      </nav>
+    
+  
+    
+    
+    
+  
+</section>
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hgfkeep" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </footer>
+    </article>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,
+      {
+        delimiters: [
+          {left: '$$', right: '$$', display:true},
+          {left: '$', right: '$', display:false},
+        ]
+      }
+    );">
+  </script>
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p><div style='padding:2px'><div style='font-weight: bold;'>遇见你是我的幸运-jxn❤️</div><br />感谢阅读，如果有问题请您留言<br /></div><div style=''><img src='https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png'> </div></p>
+    
+     © 2019
+    
+       · 
+       <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="heguangfu">
+    <meta name="description" content="一条河流分割了过去和未来">
+    <meta name="keywords" content="dev,designer">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java stack信息"/>
+<meta name="twitter:description" content="线程状态   NEW: 新建线程
+  RUNNABLE: 在虚拟机内运行
+  BLOCKED: 受阻塞并等待监视器锁，
+  WAITING: 无限期等待，wait()
+  TIMED_WAITING: 有限时间的等待，wait(timeout)
+  TERMINATED: 已退出
+     Monitor 在多线程的 JAVA程序中，实现线程之间的同步，就要说说 Monitor。
+ Monitor是 Java中用以实现线程之间的互斥与协作的主要手段，它可以看成是对象或者 Class的锁。每一个对象都有，也仅有一个 monitor。下图，描述了线程和 Monitor之间关系，以 及线程的状态转换图：
+     进入区(Entrt Set):表示线程通过synchronized要求获取对象的锁。如果对象未被锁住,则进入入拥有者;否则则在进入区等待。一旦对象锁被其他线程释放,立即参与竞争。
+  拥有者(The Owner):表示某一线程成功竞争到对象锁。
+  等待区(Wait Set):表示线程通过对象的wait方法,释放对象的锁,并在等待区等待被唤醒。
+   一个 Monitor在某个时刻，只能被一个线程拥有，该线程就是 “Active Thread”，而其它线程都是 “Waiting Thread”，分别在两个队列 “ Entry Set”和 “Wait Set”里面等候。在 “Entry Set”中等待的线程状态是 “Waiting for monitor entry”，而在 “Wait Set”中等待的线程状态是 “in Object."/>
+
+    <meta property="og:title" content="Java stack信息" />
+<meta property="og:description" content="线程状态   NEW: 新建线程
+  RUNNABLE: 在虚拟机内运行
+  BLOCKED: 受阻塞并等待监视器锁，
+  WAITING: 无限期等待，wait()
+  TIMED_WAITING: 有限时间的等待，wait(timeout)
+  TERMINATED: 已退出
+     Monitor 在多线程的 JAVA程序中，实现线程之间的同步，就要说说 Monitor。
+ Monitor是 Java中用以实现线程之间的互斥与协作的主要手段，它可以看成是对象或者 Class的锁。每一个对象都有，也仅有一个 monitor。下图，描述了线程和 Monitor之间关系，以 及线程的状态转换图：
+     进入区(Entrt Set):表示线程通过synchronized要求获取对象的锁。如果对象未被锁住,则进入入拥有者;否则则在进入区等待。一旦对象锁被其他线程释放,立即参与竞争。
+  拥有者(The Owner):表示某一线程成功竞争到对象锁。
+  等待区(Wait Set):表示线程通过对象的wait方法,释放对象的锁,并在等待区等待被唤醒。
+   一个 Monitor在某个时刻，只能被一个线程拥有，该线程就是 “Active Thread”，而其它线程都是 “Waiting Thread”，分别在两个队列 “ Entry Set”和 “Wait Set”里面等候。在 “Entry Set”中等待的线程状态是 “Waiting for monitor entry”，而在 “Wait Set”中等待的线程状态是 “in Object." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hgfkeep.github.io/posts/java_stack%E4%BF%A1%E6%81%AF/" />
+<meta property="article:published_time" content="2019-07-01T20:58:41&#43;08:00"/>
+<meta property="article:modified_time" content="2019-07-01T20:58:41&#43;08:00"/><meta property="og:see_also" content="https://hgfkeep.github.io/posts/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B7%A5%E5%85%B7/" />
+<meta property="og:see_also" content="https://hgfkeep.github.io/posts/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B7%A5%E5%85%B7/" />
+
+
+
+    
+      <base href="https://hgfkeep.github.io/posts/java_stack%E4%BF%A1%E6%81%AF/">
+    
+    <title>
+  Java stack信息 · HGFKEEP
+</title>
+
+    
+      <link rel="canonical" href="https://hgfkeep.github.io/posts/java_stack%E4%BF%A1%E6%81%AF/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://hgfkeep.github.io/css/coder.min.8250817d137d64c86ccdb5c74bfdfe88dab7a379d377512a5239dc149ac33dc2.css" integrity="sha256-glCBfRN9ZMhszbXHS/3&#43;iNq3o3nTd1EqUjncFJrDPcI=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://hgfkeep.github.io/css/code.css" />
+    
+      <link rel="stylesheet" href="https://hgfkeep.github.io/css/custom.css" />
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://hgfkeep.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://hgfkeep.github.io/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.55.6" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://hgfkeep.github.io">
+      HGFKEEP
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/about/">关于</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/posts/">博客</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/categories/">分类</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/series/">系列</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/contact/">联系我</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Java stack信息</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-07-01T20:58:41&#43;08:00'>
+                2019-07-01
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              
+            </span>
+          </div>
+          
+          
+        </div>
+      </header>
+
+      <div>
+        <div class="sect1">
+<h2 id="_线程状态"><a class="anchor" href="#_线程状态"></a>线程状态</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><code>NEW</code>: 新建线程</p>
+</li>
+<li>
+<p><code>RUNNABLE</code>: 在虚拟机内运行</p>
+</li>
+<li>
+<p><code>BLOCKED</code>: 受阻塞并等待监视器锁，</p>
+</li>
+<li>
+<p><code>WAITING</code>: 无限期等待，<code>wait()</code></p>
+</li>
+<li>
+<p><code>TIMED_WAITING</code>: 有限时间的等待，<code>wait(timeout)</code></p>
+</li>
+<li>
+<p><code>TERMINATED</code>: 已退出</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_monitor"><a class="anchor" href="#_monitor"></a>Monitor</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>在多线程的 JAVA程序中，<strong>实现线程之间的同步</strong>，就要说说 Monitor。</p>
+</div>
+<div class="paragraph">
+<p>Monitor是 Java中用以实现线程之间的互斥与协作的主要手段，它可以看成是对象或者 Class的锁。每一个对象都有，也仅有一个 monitor。下图，描述了线程和 Monitor之间关系，以 及线程的状态转换图：</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="⁨/img⁩/java_stack信息.bmp" alt="java 线程状态转换图">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>进入区(Entrt Set):表示线程通过synchronized要求获取对象的锁。如果对象未被锁住,则进入入拥有者;否则则在进入区等待。一旦对象锁被其他线程释放,立即参与竞争。</p>
+</li>
+<li>
+<p>拥有者(The Owner):表示某一线程成功竞争到对象锁。</p>
+</li>
+<li>
+<p>等待区(Wait Set):表示线程通过对象的wait方法,释放对象的锁,并在等待区等待被唤醒。</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>一个 Monitor在某个时刻，只能被一个线程拥有，该线程就是 “Active Thread”，而其它线程都是 “Waiting Thread”，分别在两个队列 “ Entry Set”和 “Wait Set”里面等候。在 “Entry Set”中等待的线程状态是 “Waiting for monitor entry”，而在 “Wait Set”中等待的线程状态是 “in Object.wait()”。</p>
+</div>
+<div class="sect2">
+<h3 id="_dump信息中对应monitor状态"><a class="anchor" href="#_dump信息中对应monitor状态"></a>dump信息中对应monitor状态</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>locked &lt;地址&gt; 目标</code> ：synchronized 申请对象锁成功,监视器的The Owner。</p>
+</li>
+<li>
+<p><code>waiting to lock &lt;地址&gt; 目标</code> ：synchronized 申请对象锁还未成功,在Entry Set等待。</p>
+</li>
+<li>
+<p><code>waiting on &lt;地址&gt; 目标</code> ：synchronized 申请对象锁成功后,调用了 <code>wait()</code> 方法,进入对象的等待区等待,在Wait Set等待。线程状态为 <code>WAITING</code> 或 <code>TIMED_WATING</code>。</p>
+</li>
+<li>
+<p><code>parking to wait for &lt;地址&gt; 目标</code>: park是基本的线程阻塞原语,不通过监视器在对象上阻塞。</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_线程状态产生原因"><a class="anchor" href="#_线程状态产生原因"></a>线程状态产生原因</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>runnable : 状态一般为 <code>RUNNABLE</code>。</p>
+</li>
+<li>
+<p>in <code>Object.wait()</code> : 等待区等待,状态为 <code>WAITING</code> 或 <code>TIMED_WAITING</code> 。</p>
+</li>
+<li>
+<p>waiting for monitor entry : 进入区等待,状态为 <code>BLOCKED</code>。</p>
+</li>
+<li>
+<p>waiting on condition : 等待区等待、被park。</p>
+</li>
+<li>
+<p>sleeping : 休眠的线程,调用了 <code>Thread.sleep()</code>。</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Wait on condition 该状态出现在<strong>线程等待某个条件的发生</strong>。
+具体是什么原因，可以结合 stacktrace来分析。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>最常见的情况就是<strong>线程处于sleep状态，等待被唤醒</strong>。</p>
+</li>
+<li>
+<p>常见的情况还有<strong>等待网络IO</strong>：在java引入nio之前，对于每个网络连接，都有一个对应的线程来处理网络的读写操作，即使没有可读写的数据，线程仍然阻塞在读写操作上，这样有可能造成资源浪费，而且给操作系统的线程调度也带来压力。在 NewIO里采用了新的机制，编写的服务器程序的性能和可扩展性都得到提高。</p>
+</li>
+<li>
+<p>正<strong>等待网络读写，这可能是一个网络瓶颈的征兆</strong>。因为网络阻塞导致线程无法执行。具体情况：</p>
+</li>
+<li>
+<p>一种情况是网络非常忙，几乎消耗了所有的带宽，仍然有大量数据等待网络读写；</p>
+</li>
+<li>
+<p>另一种情况也可能是网络空闲，但由于路由等问题，导致包无法正常的到达。
+所以要结合系统的一些性能观察工具来综合分析，</p>
+</li>
+<li>
+<p>比如 netstat统计单位时间的发送包的数目，如果很明显超过了所在网络带宽的限制</p>
+</li>
+<li>
+<p>观察 cpu的利用率，如果系统态的 CPU时间，相对于用户态的 CPU时间比例较高</p>
+</li>
+<li>
+<p>可以用 dtrace工具看系统调用的情况，如果观察到 read/write的系统调用的次数或者运行时间遥遥领先；
+这些都指向由于网络带宽所限导致的网络瓶颈。</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_线程dump信息"><a class="anchor" href="#_线程dump信息"></a>线程dump信息</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_entry_set等待"><a class="anchor" href="#_entry_set等待"></a>entry set等待</h3>
+<div class="paragraph">
+<p>dump信息：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="s2">"mythread-b"</span> <span class="c">#14 prio=5 os_prio=31 cpu=0.61ms elapsed=9.14s tid=0x00007f9f69013800 nid=0x9903 waiting for monitor entry  [0x00007000085fd000]</span>
+   java.lang.Thread.State: BLOCKED <span class="o">(</span>on object monitor<span class="o">)</span>
+        at win.hgfdodo.Task.run<span class="o">(</span>Main.java:35<span class="o">)</span>
+        - waiting to lock &lt;0x000000070fea4b58&gt; <span class="o">(</span>a java.lang.Object<span class="o">)</span>
+        at java.lang.Thread.run<span class="o">(</span>java.base@12.0.1/Thread.java:835<span class="o">)</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>线程状态 <code>BLOCKED</code>， 线程动作 <code>waiting for monitor entry</code> ，调用栈 <code>waiting to lock</code> 总是一起出现，表示<strong>程序开始发生资源竞争</strong>。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_同步块阻塞"><a class="anchor" href="#_同步块阻塞"></a>同步块阻塞</h3>
+<div class="paragraph">
+<p>一个线程锁住某对象,大量其他线程在该对象上等待。</p>
+</div>
+<div class="paragraph">
+<p>例如：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code>"mythread-a" #13 prio=5 os_prio=31 cpu=0.19ms elapsed=9.14s tid=0x00007f9f69000000 nid=0x9c03 waiting on condition  [0x00007000084fa000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+        at java.lang.Thread.sleep(java.base@12.0.1/Native Method)
+        at win.hgfdodo.Task.run(Main.java:35)
+        - locked &lt;0x000000070fea4b58&gt; (a java.lang.Object)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)
+
+"mythread-b" #14 prio=5 os_prio=31 cpu=0.61ms elapsed=9.14s tid=0x00007f9f69013800 nid=0x9903 waiting for monitor entry  [0x00007000085fd000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+        at win.hgfdodo.Task.run(Main.java:35)
+        - waiting to lock &lt;0x000000070fea4b58&gt; (a java.lang.Object)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>mythread-a 锁住了对象&lt;0x000000070fea4b58&gt;，mythread-b 阻塞了，等待对象&lt;0x000000070fea4b58&gt;可访问。</p>
+</div>
+<div class="sect3">
+<h4 id="_持续io"><a class="anchor" href="#_持续io"></a>持续IO</h4>
+<div class="paragraph">
+<p>格外注意对IO线程的真实状态的分析。 持续IO表现为, 被堆栈捕获到 <code>RUNNABLE</code> 的IO调用。
+线程状态 <code>RUNNABLE</code> 可能是：服务端没有及时返回（mysql请求死锁）或者正在进行网络读写（下载网络文件）。这会造成线程状态是`RUNNABLE`，但是程序实际不会继续往下执行。</p>
+</div>
+<div class="paragraph">
+<p>例子代码：
+<a href="https://github.com/hgfkeep/dive-into-java/blob/master/stack/src/win/hgfdodo/NetIOStack.java" class="bare">https://github.com/hgfkeep/dive-into-java/blob/master/stack/src/win/hgfdodo/NetIOStack.java</a></p>
+</div>
+<div class="paragraph">
+<p>下载文件（进行网络读写）时，堆栈信息如下：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code>"mythread" #13 prio=5 os_prio=31 cpu=1356.81ms elapsed=18.42s tid=0x00007fc79b81f800 nid=0x5c03 runnable  [0x000070000dd96000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(java.base@12.0.1/Native Method)
+        at java.net.SocketInputStream.socketRead(java.base@12.0.1/SocketInputStream.java:115)
+        at java.net.SocketInputStream.read(java.base@12.0.1/SocketInputStream.java:168)
+        at java.net.SocketInputStream.read(java.base@12.0.1/SocketInputStream.java:140)
+        at sun.security.ssl.SSLSocketInputRecord.read(java.base@12.0.1/SSLSocketInputRecord.java:448)
+        at sun.security.ssl.SSLSocketInputRecord.decodeInputRecord(java.base@12.0.1/SSLSocketInputRecord.java:237)
+        at sun.security.ssl.SSLSocketInputRecord.decode(java.base@12.0.1/SSLSocketInputRecord.java:190)
+        at sun.security.ssl.SSLTransport.decode(java.base@12.0.1/SSLTransport.java:108)
+        at sun.security.ssl.SSLSocketImpl.decode(java.base@12.0.1/SSLSocketImpl.java:1183)
+        at sun.security.ssl.SSLSocketImpl.readApplicationRecord(java.base@12.0.1/SSLSocketImpl.java:1153)
+        - locked &lt;0x000000070e7023c0&gt; (a sun.security.ssl.SSLSocketImpl)
+        at sun.security.ssl.SSLSocketImpl$AppInputStream.read(java.base@12.0.1/SSLSocketImpl.java:828)
+        - locked &lt;0x000000070e702430&gt; (a sun.security.ssl.SSLSocketImpl$AppInputStream)
+        at java.io.BufferedInputStream.fill(java.base@12.0.1/BufferedInputStream.java:252)
+        at java.io.BufferedInputStream.read1(java.base@12.0.1/BufferedInputStream.java:292)
+        at java.io.BufferedInputStream.read(java.base@12.0.1/BufferedInputStream.java:351)
+        - locked &lt;0x000000070e7024b8&gt; (a java.io.BufferedInputStream)
+        at sun.net.www.MeteredStream.read(java.base@12.0.1/MeteredStream.java:134)
+        - locked &lt;0x000000070e7024e0&gt; (a sun.net.www.http.KeepAliveStream)
+        at java.io.FilterInputStream.read(java.base@12.0.1/FilterInputStream.java:133)
+        at sun.net.www.protocol.http.HttpURLConnection$HttpInputStream.read(java.base@12.0.1/HttpURLConnection.java:3495)
+        at sun.net.www.protocol.http.HttpURLConnection$HttpInputStream.read(java.base@12.0.1/HttpURLConnection.java:3488)
+        at win.hgfdodo.Download.run(NetIOStack.java:46)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_死锁分析"><a class="anchor" href="#_死锁分析"></a>死锁分析</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>stack命令可以自动检查和并报告明显的死锁信息。</p>
+</div>
+<div class="paragraph">
+<p>例子代码：
+<a href="https://github.com/hgfkeep/dive-into-java/blob/master/stack/src/win/hgfdodo/DeadLock.java" class="bare">https://github.com/hgfkeep/dive-into-java/blob/master/stack/src/win/hgfdodo/DeadLock.java</a></p>
+</div>
+<div class="paragraph">
+<p>输出的堆栈信息如下：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="log">Found one Java-level deadlock:
+=============================
+"Thread-0":
+  waiting to lock monitor 0x0000000103beaf00 (object 0x00000007bff00498, a java.lang.String),
+  which is held by "Thread-1"
+"Thread-1":
+  waiting to lock monitor 0x0000000103becf00 (object 0x00000007bff00468, a java.lang.String),
+  which is held by "Thread-0"
+
+Java stack information for the threads listed above:
+===================================================
+"Thread-0":
+        at win.hgfdodo.MyTask.run(DeadLock.java:36)
+        - waiting to lock &lt;0x00000007bff00498&gt; (a java.lang.String)
+        - locked &lt;0x00000007bff00468&gt; (a java.lang.String)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)
+"Thread-1":
+        at win.hgfdodo.MyTask.run(DeadLock.java:36)
+        - waiting to lock &lt;0x00000007bff00468&gt; (a java.lang.String)
+        - locked &lt;0x00000007bff00498&gt; (a java.lang.String)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)
+
+Found 1 deadlock.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>jstack提示发生死锁。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_其他注意事项"><a class="anchor" href="#_其他注意事项"></a>其他注意事项</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>查看线程堆栈信息时，需要先查看内存的使用情况，如果此时正在FULL GC，则会阻塞堆栈快照请求。因为Full GC会暂停所有用户线程。</p>
+</div>
+</div>
+</div>
+
+      </div>
+
+      <footer>
+        
+
+<section class="see-also">
+  
+    
+    
+    
+      <h3>See also in java</h3>
+      <nav>
+        <ul>
+        
+        
+          
+        
+          
+            <li>
+              <a href="https://hgfkeep.github.io/posts/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B7%A5%E5%85%B7/">Java性能分析工具</a>
+            </li>
+          
+        
+        </ul>
+      </nav>
+    
+  
+    
+    
+    
+  
+</section>
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hgfkeep" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p><div style='padding:2px'><div style='font-weight: bold;'>遇见你是我的幸运-jxn❤️</div><br />感谢阅读，如果有问题请您留言<br /></div><div style=''><img src='https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png'> </div></p>
+    
+     © 2019
+    
+       · 
+       <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

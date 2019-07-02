@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on HGFKEEP</title>
-    <link>https://hgfkeep.github.io/posts/</link>
-    <description>Recent content in Posts on HGFKEEP</description>
+    <title>java on HGFKEEP</title>
+    <link>https://hgfkeep.github.io/series/java/</link>
+    <description>Recent content in java on HGFKEEP</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 01 Jul 2019 20:58:41 +0800</lastBuildDate>
     
-	<atom:link href="https://hgfkeep.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://hgfkeep.github.io/series/java/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -46,48 +46,6 @@ CPU使用率 CPU使用时间分为：
  用户时间（User Time）：CPU执行用户应用程序的时间 系统时间（System Time）：CPU执行操作系统内核代码的时间。一般与硬件资源打交道，都需要执行内核代码，例如从磁盘读取数据、发送网络请求等。  CPU的调优目标是单位时间内最大限度的提高CPU利用率。
 分析思路 在linux操作系统中，执行 vmstat 5, 结果如下：
 procs -----------memory--------------- ----swap---- ---io--- -----system------ ----------CPU------- r b swpd free buff cache si so bi bo in cs us sy id wa st 2 0 236456 2259632 200052 730348 0 0 1 6 1 1 37 8 55 0 0 2 0 236456 2259624 200052 730348 0 0 0 10 179 332 40 7 53 0 0 2 0 236456 2259624 200052 730348 0 0 0 20 180 356 56 7 37 0 0 从输出结果可知，第一次输出的5s内，CPU一共执行 $ (37\% + 8\%) * 5s=2.</description>
-    </item>
-    
-    <item>
-      <title>asciidoctor格式</title>
-      <link>https://hgfkeep.github.io/posts/asciidoctor%E6%A0%BC%E5%BC%8F/</link>
-      <pubDate>Wed, 26 Jun 2019 12:21:02 +0800</pubDate>
-      
-      <guid>https://hgfkeep.github.io/posts/asciidoctor%E6%A0%BC%E5%BC%8F/</guid>
-      <description>格式化文本 加粗斜体等宽 加粗斜体等宽可组合叠加
- 例如：
- _italic phrase_ __i__talic le__tt__ers *bold phrase* **b**old le**tt**ers *_bold italic phrase_* **__b__**old italic le**__tt__**ers `monospace phrase` and le``tt``ers `_monospace italic phrase_` and le``__tt__``ers `*monospace bold phrase*` and le``**tt**``ers `*_monospace bold italic phrase_*` and le``**__tt__**``ers   italic phrase
- italic letters
- bold phrase
- bold letters
- bold italic phrase
- bold italic letters
- monospace phrase and letters
- monospace italic phrase and letters</description>
-    </item>
-    
-    <item>
-      <title>使用hugo创建博客</title>
-      <link>https://hgfkeep.github.io/posts/%E4%BD%BF%E7%94%A8hugo%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2/</link>
-      <pubDate>Tue, 25 Jun 2019 16:33:26 +0800</pubDate>
-      
-      <guid>https://hgfkeep.github.io/posts/%E4%BD%BF%E7%94%A8hugo%E5%88%9B%E5%BB%BA%E5%8D%9A%E5%AE%A2/</guid>
-      <description>使用hugo创建博客  使用 hugo + asciidoc(tor)实现静态博客、代码高亮、图标等。 hugo site构建使用镜像完成。 github部署静态博客。 travis-ci 持续集成和部署。  有用的链接  hugo github docker hub asciidoctor travis  博客配置 主要配置hugo和asciidoctor的触发协同构建。
-思路 hugo external helpers 提供外部格式化支持。通过官网给出的文档和hugo的源代码，知道hugo是根据文件后缀使用external helpers取格式化文件。
-文件起始的头部描述信息和markdnwon一样。
- 使用external helpers时，必须安装对应的工具，比如hugo+asciidoc(tor)就需要安装asciidoc(tor)。
- 所以需要使用hugo + asciidoc(tor)编译文档时，只需要将文件后缀改成asciidoc,adoc或者ad，hugo在构建site的时候，会自动的调用外部工具编译文件。
-external helpers支持情况 各类型文件后缀主持如下：
- markdown的文件：  md markdown markdown  asciidoc文件：  asciidoc adoc ad  mmark文件：  mmark  rst文件：  rdt  html文件：  htm html   配置样式 编辑hugo 根目录下面的config.</description>
-    </item>
-    
-    <item>
-      <title>如何使用typora编写Hugo draft</title>
-      <link>https://hgfkeep.github.io/posts/how-to-write-draft-in-hugo/</link>
-      <pubDate>Tue, 25 Jun 2019 16:33:26 +0800</pubDate>
-      
-      <guid>https://hgfkeep.github.io/posts/how-to-write-draft-in-hugo/</guid>
-      <description>&lt;p&gt;本文主要讲解如何使用typora编写hugo 文章，达到本地编辑实时预览，和真正部署的结果一致。&lt;/p&gt;</description>
     </item>
     
   </channel>

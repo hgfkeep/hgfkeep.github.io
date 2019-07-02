@@ -6,10 +6,47 @@
     <description>Recent content on HGFKEEP</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 26 Jun 2019 12:21:02 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jul 2019 20:58:41 +0800</lastBuildDate>
     
 	<atom:link href="https://hgfkeep.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Java stack信息</title>
+      <link>https://hgfkeep.github.io/posts/java_stack%E4%BF%A1%E6%81%AF/</link>
+      <pubDate>Mon, 01 Jul 2019 20:58:41 +0800</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/java_stack%E4%BF%A1%E6%81%AF/</guid>
+      <description>线程状态   NEW: 新建线程
+  RUNNABLE: 在虚拟机内运行
+  BLOCKED: 受阻塞并等待监视器锁，
+  WAITING: 无限期等待，wait()
+  TIMED_WAITING: 有限时间的等待，wait(timeout)
+  TERMINATED: 已退出
+     Monitor 在多线程的 JAVA程序中，实现线程之间的同步，就要说说 Monitor。
+ Monitor是 Java中用以实现线程之间的互斥与协作的主要手段，它可以看成是对象或者 Class的锁。每一个对象都有，也仅有一个 monitor。下图，描述了线程和 Monitor之间关系，以 及线程的状态转换图：
+     进入区(Entrt Set):表示线程通过synchronized要求获取对象的锁。如果对象未被锁住,则进入入拥有者;否则则在进入区等待。一旦对象锁被其他线程释放,立即参与竞争。
+  拥有者(The Owner):表示某一线程成功竞争到对象锁。
+  等待区(Wait Set):表示线程通过对象的wait方法,释放对象的锁,并在等待区等待被唤醒。
+   一个 Monitor在某个时刻，只能被一个线程拥有，该线程就是 “Active Thread”，而其它线程都是 “Waiting Thread”，分别在两个队列 “ Entry Set”和 “Wait Set”里面等候。在 “Entry Set”中等待的线程状态是 “Waiting for monitor entry”，而在 “Wait Set”中等待的线程状态是 “in Object.</description>
+    </item>
+    
+    <item>
+      <title>Java性能分析工具</title>
+      <link>https://hgfkeep.github.io/posts/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B7%A5%E5%85%B7/</link>
+      <pubDate>Sun, 30 Jun 2019 17:53:59 +0800</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/java%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%B7%A5%E5%85%B7/</guid>
+      <description>性能分析的前提是将程序的运行状况以及应用的运行环境状况以一种可视化的方式直接的展示出来，那如何实现可视化的展示呢？
+本文主要从操作系统提供的工具、java内置的工具和java mission control介绍java性能分析工具。
+操作系统工具 操作系统中的工具并非是只针对java的，适合所有程序。
+在操作系统中，利用工具收集系统中的各类资源的监控数据，包括：
+ CPU 内存 磁盘 网络  只有收集的数据更充分，新能测试的结果才会更准确。
+CPU使用率 CPU使用时间分为：
+ 用户时间（User Time）：CPU执行用户应用程序的时间 系统时间（System Time）：CPU执行操作系统内核代码的时间。一般与硬件资源打交道，都需要执行内核代码，例如从磁盘读取数据、发送网络请求等。  CPU的调优目标是单位时间内最大限度的提高CPU利用率。
+分析思路 在linux操作系统中，执行 vmstat 5, 结果如下：
+procs -----------memory--------------- ----swap---- ---io--- -----system------ ----------CPU------- r b swpd free buff cache si so bi bo in cs us sy id wa st 2 0 236456 2259632 200052 730348 0 0 1 6 1 1 37 8 55 0 0 2 0 236456 2259624 200052 730348 0 0 0 10 179 332 40 7 53 0 0 2 0 236456 2259624 200052 730348 0 0 0 20 180 356 56 7 37 0 0 从输出结果可知，第一次输出的5s内，CPU一共执行 $ (37\% + 8\%) * 5s=2.</description>
+    </item>
     
     <item>
       <title>asciidoctor格式</title>
