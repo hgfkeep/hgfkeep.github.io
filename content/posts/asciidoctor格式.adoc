@@ -251,6 +251,31 @@ DiagramBlock <|-- PlantUmlBlock
 
 ## 文件操作
 
+### 图片
+
+语法：
+```asciidoctor
+image::http://asciidoctor.org/images/octocat.jpg[GitHub mascot]
+```
+
+效果：
+
+image::http://asciidoctor.org/images/octocat.jpg[GitHub mascot]
+
+
+### 视频
+
+嵌入 Vimeo 视频
+
+语法：
+```asciidoctor
+video::67480300[vimeo]
+```
+
+效果：
+
+video::67480300[vimeo]
+
 ### 文档属性
 
 WARNING: 文档属性只适用asciidoc(tor)! 不兼容markdown！

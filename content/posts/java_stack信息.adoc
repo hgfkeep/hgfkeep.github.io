@@ -1,0 +1,209 @@
+---
+draft: false
+title: "Java stack信息"
+date: 2019-07-01T20:58:41+08:00
+slug: "" 
+lastmod: 2019-07-01T20:58:41+08:00
+keywords: []
+description: ""
+tags: []
+categories: []
+series: ["java", "性能调优"]
+author: "heguangfu"
+
+# You can also close(false) or open(true) something for this content.
+# P.S. comment can only be closed
+comment: true
+toc: true
+autoCollapseToc: true
+postMetaInFooter: true
+hiddenFromHomePage: false
+# You can also define another contentCopyright. e.g. contentCopyright: "This is another copyright."
+contentCopyright: <img src="https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png"><br/>感谢阅读，如果有问题请您留言，我会及时改正<br/> 本博客所有原创文章版权归hgf所有，转载请注明出处hgfkeep.github.io
+
+typora-root-url: ../../static
+
+---
+
+:source-highlighter: rouge
+:rouge-style: molokai
+:icons: font
+:sectanchors: 
+:plantuml-server-url: "http://plantuml.com/plantuml"
+
+
+# 读懂java stack信息
+
+## 线程状态
+
+* `NEW`: 新建线程
+* `RUNNABLE`: 在虚拟机内运行
+* `BLOCKED`: 受阻塞并等待监视器锁，
+* `WAITING`: 无限期等待，`wait()`
+* `TIMED_WAITING`: 有限时间的等待，`wait(timeout)`
+* `TERMINATED`: 已退出
+
+## Monitor
+
+在多线程的 JAVA程序中，**实现线程之间的同步**，就要说说 Monitor。 
+
+Monitor是 Java中用以实现线程之间的互斥与协作的主要手段，它可以看成是对象或者 Class的锁。每一个对象都有，也仅有一个 monitor。下图，描述了线程和 Monitor之间关系，以 及线程的状态转换图：
+
+image::⁨/img⁩/java_stack信息.bmp[java 线程状态转换图]
+
+* 进入区(Entrt Set):表示线程通过synchronized要求获取对象的锁。如果对象未被锁住,则进入入拥有者;否则则在进入区等待。一旦对象锁被其他线程释放,立即参与竞争。
+* 拥有者(The Owner):表示某一线程成功竞争到对象锁。
+* 等待区(Wait Set):表示线程通过对象的wait方法,释放对象的锁,并在等待区等待被唤醒。
+
+一个 Monitor在某个时刻，只能被一个线程拥有，该线程就是 “Active Thread”，而其它线程都是 “Waiting Thread”，分别在两个队列 “ Entry Set”和 “Wait Set”里面等候。在 “Entry Set”中等待的线程状态是 “Waiting for monitor entry”，而在 “Wait Set”中等待的线程状态是 “in Object.wait()”。 
+
+
+### dump信息中对应monitor状态
+
+* `locked <地址> 目标` ：synchronized 申请对象锁成功,监视器的The Owner。
+* `waiting to lock <地址> 目标` ：synchronized 申请对象锁还未成功,在Entry Set等待。
+* `waiting on <地址> 目标` ：synchronized 申请对象锁成功后,调用了 `wait()` 方法,进入对象的等待区等待,在Wait Set等待。线程状态为 `WAITING` 或 `TIMED_WATING`。
+* `parking to wait for <地址> 目标`: park是基本的线程阻塞原语,不通过监视器在对象上阻塞。
+
+### 线程状态产生原因
+
+* runnable : 状态一般为 `RUNNABLE`。
+* in `Object.wait()` : 等待区等待,状态为 `WAITING` 或 `TIMED_WAITING` 。
+* waiting for monitor entry : 进入区等待,状态为 `BLOCKED`。
+* waiting on condition : 等待区等待、被park。
+* sleeping : 休眠的线程,调用了 `Thread.sleep()`。
+
+Wait on condition 该状态出现在**线程等待某个条件的发生**。
+具体是什么原因，可以结合 stacktrace来分析。 
+
+* 最常见的情况就是**线程处于sleep状态，等待被唤醒**。 
+* 常见的情况还有**等待网络IO**：在java引入nio之前，对于每个网络连接，都有一个对应的线程来处理网络的读写操作，即使没有可读写的数据，线程仍然阻塞在读写操作上，这样有可能造成资源浪费，而且给操作系统的线程调度也带来压力。在 NewIO里采用了新的机制，编写的服务器程序的性能和可扩展性都得到提高。 
+* 正**等待网络读写，这可能是一个网络瓶颈的征兆**。因为网络阻塞导致线程无法执行。具体情况：
+    * 一种情况是网络非常忙，几乎消耗了所有的带宽，仍然有大量数据等待网络读写；
+    * 另一种情况也可能是网络空闲，但由于路由等问题，导致包无法正常的到达。
+    所以要结合系统的一些性能观察工具来综合分析，
+    * 比如 netstat统计单位时间的发送包的数目，如果很明显超过了所在网络带宽的限制
+    * 观察 cpu的利用率，如果系统态的 CPU时间，相对于用户态的 CPU时间比例较高
+    * 可以用 dtrace工具看系统调用的情况，如果观察到 read/write的系统调用的次数或者运行时间遥遥领先；
+    这些都指向由于网络带宽所限导致的网络瓶颈。
+
+## 线程dump信息
+
+### entry set等待
+
+dump信息：
+
+```shell,linenums
+"mythread-b" #14 prio=5 os_prio=31 cpu=0.61ms elapsed=9.14s tid=0x00007f9f69013800 nid=0x9903 waiting for monitor entry  [0x00007000085fd000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+        at win.hgfdodo.Task.run(Main.java:35)
+        - waiting to lock <0x000000070fea4b58> (a java.lang.Object)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)
+```
+
+线程状态 `BLOCKED`， 线程动作 `waiting for monitor entry` ，调用栈 `waiting to lock` 总是一起出现，表示**程序开始发生资源竞争**。
+
+
+### 同步块阻塞
+
+一个线程锁住某对象,大量其他线程在该对象上等待。
+
+例如：
+
+```
+"mythread-a" #13 prio=5 os_prio=31 cpu=0.19ms elapsed=9.14s tid=0x00007f9f69000000 nid=0x9c03 waiting on condition  [0x00007000084fa000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+        at java.lang.Thread.sleep(java.base@12.0.1/Native Method)
+        at win.hgfdodo.Task.run(Main.java:35)
+        - locked <0x000000070fea4b58> (a java.lang.Object)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)
+
+"mythread-b" #14 prio=5 os_prio=31 cpu=0.61ms elapsed=9.14s tid=0x00007f9f69013800 nid=0x9903 waiting for monitor entry  [0x00007000085fd000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+        at win.hgfdodo.Task.run(Main.java:35)
+        - waiting to lock <0x000000070fea4b58> (a java.lang.Object)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)
+```
+
+mythread-a 锁住了对象<0x000000070fea4b58>，mythread-b 阻塞了，等待对象<0x000000070fea4b58>可访问。
+
+#### 持续IO
+
+格外注意对IO线程的真实状态的分析。 持续IO表现为, 被堆栈捕获到 `RUNNABLE` 的IO调用。
+线程状态 `RUNNABLE` 可能是：服务端没有及时返回（mysql请求死锁）或者正在进行网络读写（下载网络文件）。这会造成线程状态是`RUNNABLE`，但是程序实际不会继续往下执行。
+
+例子代码：
+https://github.com/hgfkeep/dive-into-java/blob/master/stack/src/win/hgfdodo/NetIOStack.java[]
+
+下载文件（进行网络读写）时，堆栈信息如下：
+
+```
+"mythread" #13 prio=5 os_prio=31 cpu=1356.81ms elapsed=18.42s tid=0x00007fc79b81f800 nid=0x5c03 runnable  [0x000070000dd96000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.SocketInputStream.socketRead0(java.base@12.0.1/Native Method)
+        at java.net.SocketInputStream.socketRead(java.base@12.0.1/SocketInputStream.java:115)
+        at java.net.SocketInputStream.read(java.base@12.0.1/SocketInputStream.java:168)
+        at java.net.SocketInputStream.read(java.base@12.0.1/SocketInputStream.java:140)
+        at sun.security.ssl.SSLSocketInputRecord.read(java.base@12.0.1/SSLSocketInputRecord.java:448)
+        at sun.security.ssl.SSLSocketInputRecord.decodeInputRecord(java.base@12.0.1/SSLSocketInputRecord.java:237)
+        at sun.security.ssl.SSLSocketInputRecord.decode(java.base@12.0.1/SSLSocketInputRecord.java:190)
+        at sun.security.ssl.SSLTransport.decode(java.base@12.0.1/SSLTransport.java:108)
+        at sun.security.ssl.SSLSocketImpl.decode(java.base@12.0.1/SSLSocketImpl.java:1183)
+        at sun.security.ssl.SSLSocketImpl.readApplicationRecord(java.base@12.0.1/SSLSocketImpl.java:1153)
+        - locked <0x000000070e7023c0> (a sun.security.ssl.SSLSocketImpl)
+        at sun.security.ssl.SSLSocketImpl$AppInputStream.read(java.base@12.0.1/SSLSocketImpl.java:828)
+        - locked <0x000000070e702430> (a sun.security.ssl.SSLSocketImpl$AppInputStream)
+        at java.io.BufferedInputStream.fill(java.base@12.0.1/BufferedInputStream.java:252)
+        at java.io.BufferedInputStream.read1(java.base@12.0.1/BufferedInputStream.java:292)
+        at java.io.BufferedInputStream.read(java.base@12.0.1/BufferedInputStream.java:351)
+        - locked <0x000000070e7024b8> (a java.io.BufferedInputStream)
+        at sun.net.www.MeteredStream.read(java.base@12.0.1/MeteredStream.java:134)
+        - locked <0x000000070e7024e0> (a sun.net.www.http.KeepAliveStream)
+        at java.io.FilterInputStream.read(java.base@12.0.1/FilterInputStream.java:133)
+        at sun.net.www.protocol.http.HttpURLConnection$HttpInputStream.read(java.base@12.0.1/HttpURLConnection.java:3495)
+        at sun.net.www.protocol.http.HttpURLConnection$HttpInputStream.read(java.base@12.0.1/HttpURLConnection.java:3488)
+        at win.hgfdodo.Download.run(NetIOStack.java:46)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)
+```
+
+
+## 死锁分析
+
+stack命令可以自动检查和并报告明显的死锁信息。
+
+例子代码：
+https://github.com/hgfkeep/dive-into-java/blob/master/stack/src/win/hgfdodo/DeadLock.java[]
+
+输出的堆栈信息如下：
+
+```log
+Found one Java-level deadlock:
+=============================
+"Thread-0":
+  waiting to lock monitor 0x0000000103beaf00 (object 0x00000007bff00498, a java.lang.String),
+  which is held by "Thread-1"
+"Thread-1":
+  waiting to lock monitor 0x0000000103becf00 (object 0x00000007bff00468, a java.lang.String),
+  which is held by "Thread-0"
+
+Java stack information for the threads listed above:
+===================================================
+"Thread-0":
+        at win.hgfdodo.MyTask.run(DeadLock.java:36)
+        - waiting to lock <0x00000007bff00498> (a java.lang.String)
+        - locked <0x00000007bff00468> (a java.lang.String)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)
+"Thread-1":
+        at win.hgfdodo.MyTask.run(DeadLock.java:36)
+        - waiting to lock <0x00000007bff00468> (a java.lang.String)
+        - locked <0x00000007bff00498> (a java.lang.String)
+        at java.lang.Thread.run(java.base@12.0.1/Thread.java:835)
+
+Found 1 deadlock.
+```
+
+jstack提示发生死锁。
+
+## 其他注意事项
+
+查看线程堆栈信息时，需要先查看内存的使用情况，如果此时正在FULL GC，则会阻塞堆栈快照请求。因为Full GC会暂停所有用户线程。
