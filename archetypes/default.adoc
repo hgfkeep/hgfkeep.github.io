@@ -1,8 +1,8 @@
 ---
-draft = true
+draft: true
 title: "{{ replace .TranslationBaseName "-" " " | title }}"
 date: {{ .Date }}
-slug = "" 
+slug: "" 
 lastmod: {{ .Date }}
 keywords: []
 description: ""
