@@ -263,6 +263,15 @@ image::http://asciidoctor.org/images/octocat.jpg[GitHub mascot]
 image::http://asciidoctor.org/images/octocat.jpg[GitHub mascot]
 
 
+本地图片：
+```
+image::/img/test.png[alt]
+```
+
+效果：
+
+image::/img/test.png[alt]
+
 ### 视频
 
 嵌入 Vimeo 视频
