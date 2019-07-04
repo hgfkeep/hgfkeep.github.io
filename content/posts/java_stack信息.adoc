@@ -93,7 +93,7 @@ Wait on condition 该状态出现在**线程等待某个条件的发生**。
 
 dump信息：
 
-```shell,linenums
+```shell
 "mythread-b" #14 prio=5 os_prio=31 cpu=0.61ms elapsed=9.14s tid=0x00007f9f69013800 nid=0x9903 waiting for monitor entry  [0x00007000085fd000]
    java.lang.Thread.State: BLOCKED (on object monitor)
         at win.hgfdodo.Task.run(Main.java:35)

@@ -1,29 +1,16 @@
 +++
-title = "About Hugo"
+title = "关于"
 slug = "about"
 +++
 
-Hugo is a static site engine written in Go.
 
+👏欢迎您!
 
-It makes use of a variety of open source projects including:
+我是heguangfu。
 
-* [Cobra](https://github.com/spf13/cobra)
-* [Viper](https://github.com/spf13/viper)
-* [J Walter Weatherman](https://github.com/spf13/jWalterWeatherman)
-* [Cast](https://github.com/spf13/cast)
+我的博客包括了两个特色的页面：
 
-Learn more and contribute on [GitHub](https://github.com/spf13).
+1. 辩: “道理不辩不明”。🚩每个月提出一个有意思的问题，大家可以一起来辩一辩。
+2. 问：🤔️每个人都会有疑惑🤔。将自己的疑惑列出来，期待自己有一天能解答，或者有缘人能帮我解答。
 
-## Setup
-
-Some fun facts about [Hugo](http://gohugo.io/):
-
-* Built in [Go](http://golang.org/)
-* Loosely inspired by [Jekyll](http://jekyllrb.com/)
-* Primarily developed by [spf13](http://spf13.com/) on the train while commuting to and from Manhattan.
-* Coded in [Vim](http://vim.org) using [spf13-vim](http://vim.spf13.com/)
-
-Have questions or suggestions? Feel free to [open an issue on GitHub](https://github.com/spf13/hugo/issues/new) or [ask me on Twitter](https://twitter.com/spf13).
-
-Thanks for reading!
+Thanks for reading!🙏
