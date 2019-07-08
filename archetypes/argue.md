@@ -2,13 +2,13 @@
 draft: true
 title: "{{ replace .TranslationBaseName "-" " " | title }}"
 date: {{ .Date }}
-slug: "" 
+slug: "argue" 
 lastmod: {{ .Date }}
 keywords: []
 description: ""
 tags: []
 categories: []
-series: []
+series: ["argue"]
 author: "heguangfu"
 katex: true
 
@@ -36,3 +36,15 @@ sequenceDiagrams:
 typora-root-url: ../../static
 
 ---
+
+
+## 道理不辩不明
+
+### 话题
+
+
+### 网络上的观点
+
+
+
+你的观点是什么呢？肯请您留言！

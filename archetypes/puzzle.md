@@ -2,13 +2,13 @@
 draft: true
 title: "{{ replace .TranslationBaseName "-" " " | title }}"
 date: {{ .Date }}
-slug: "" 
+slug: "puzzle" 
 lastmod: {{ .Date }}
 keywords: []
 description: ""
 tags: []
-categories: []
-series: []
+categories: ["puzzle"]
+series: ["问"]
 author: "heguangfu"
 katex: true
 
@@ -36,3 +36,19 @@ sequenceDiagrams:
 typora-root-url: ../../static
 
 ---
+
+## 问题来源
+
+
+## 问题描述
+
+
+## 问题解决过程
+
+
+## 问题解惑
+
+
+
+
+求助：有缘人能不帮我解惑吗？恳请留言！

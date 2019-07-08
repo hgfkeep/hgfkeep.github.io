@@ -1,9 +1,9 @@
----
-draft: true
-title: "{{ replace .TranslationBaseName "-" " " | title }}"
-date: {{ .Date }}
-slug: "" 
-lastmod: {{ .Date }}
+--- 
+draft = true
+title: "Mybatis工作原理分析"
+date: 2019-07-08T16:11:33+08:00
+slug = "" 
+lastmod: 2019-07-08T16:11:33+08:00
 keywords: []
 description: ""
 tags: []
@@ -22,8 +22,6 @@ reward: false
 mathjax: true
 mathjaxEnableSingleDollar: true
 mathjaxEnableAutoNumber: true
-
-hideHeaderAndFooter: false
 
 flowchartDiagrams:
   enable: false
