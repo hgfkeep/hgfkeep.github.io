@@ -1,0 +1,427 @@
+---
+draft: false
+title: "Mybatis工作原理分析"
+date: 2019-07-08T16:11:33+08:00
+slug: "" 
+lastmod: 2019-07-08T16:11:33+08:00
+keywords: []
+description: ""
+tags: []
+categories: []
+series: []
+author: "heguangfu"
+katex: trues
+
+comment: true
+toc: true
+autoCollapseToc: true
+postMetaInFooter: true
+hiddenFromHomePage: false
+contentCopyright: "<img src='https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png'><br/>感谢阅读，如果有问题请您留言，我会及时改正<br/> 本博客所有原创文章版权归hgf所有，转载请注明出处hgfkeep.github.io"
+reward: false
+mathjax: true
+mathjaxEnableSingleDollar: true
+mathjaxEnableAutoNumber: true
+
+flowchartDiagrams:
+  enable: false
+  options: ""
+
+sequenceDiagrams: 
+  enable: false
+  options: ""
+
+typora-root-url: ../../static
+
+---
+
+
+:source-highlighter: rouge
+:rouge-style: molokai
+:icons: font
+:plantuml-server-url: "http://plantuml.com/plantuml"
+:sectanchors:
+
+
+## 解析配置
+
+mybatis的配置类为 `org.apache.ibatis.session.Configuration` ，包括了构造 `SqlSessionFactory` 所需的所有参数。
+
+所以为了顺利的构造出 `SqlSessionFactory`，必须先构造 `org.apache.ibatis.session.Configuration` 。该配置可以通过xml解析器（mybatis内建 `XMLConfigBuilder` 解析处理xml配置）构造。
+
+### MapperFactoryBean获取mapper接口代理类
+
+`MapperFactoryBean`提供了对mapper配置文件的校验和mapper对象的生成，是mapper的工厂对象。
+
+```java, linenums
+public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements FactoryBean<T>
+```
+
+继承了`SqlSessionDaoSupport`，该类又实现了`InitializingBean`,可知类的逻辑初始化在`afterPropertiesSet()`:
+
+```java,linenums
+  //模版初始化方法
+	public final void afterPropertiesSet() throws IllegalArgumentException, BeanInitializationException {
+		// 抽象父类定义检查配置
+		checkDaoConfig();
+
+		// 具体实现类的模版初始化方法
+		try {
+			initDao();
+		}
+		catch (Exception ex) {
+			throw new BeanInitializationException("Initialization of DAO failed", ex);
+		}
+	}
+
+  protected void checkDaoConfig() {
+    super.checkDaoConfig();
+
+    notNull(this.mapperInterface, "Property 'mapperInterface' is required");
+
+    Configuration configuration = getSqlSession().getConfiguration();
+    if (this.addToConfig && !configuration.hasMapper(this.mapperInterface)) {
+      try {
+        configuration.addMapper(this.mapperInterface);
+      } catch (Exception e) {
+        logger.error("Error while adding the mapper '" + this.mapperInterface + "' to configuration.", e);
+        throw new IllegalArgumentException(e);
+      } finally {
+        ErrorContext.instance().reset();
+      }
+    }
+  }
+
+  //父类验证sqlsessoin可被创建，
+  protected void checkDaoConfig() {
+    notNull(this.sqlSessionTemplate, "Property 'sqlSessionFactory' or 'sqlSessionTemplate' are required");
+  }
+```
+ 
+. 父类中 `checkDaoConfig()` 方法验证 SqlSession 不为空。 `MapperFactoryBean` 在设置 SqlSessionFactory 时创建 SqlSession
+. `configuration.addMapper(this.mapperInterface);` 添加映射类, 保证mapper接口存在。（mapper配置存在是对配置文件解析时，自动注册的）。
+
+
+实现了`FactoryBean`接口，那么mapper对象的可以通过`getObject()`方法获得。
+
+```java,linenums
+  public T getObject() throws Exception {
+    return getSqlSession().getMapper(this.mapperInterface);
+  }
+```
+
+通过SqlSession获取前面注册到配置中的接口代理类。
+
+
+## 构建SqlSessionFactory
+
+一般使用`SqlSessionFactoryBean`在spring context中构造共享的`SqlSessionFactory`。
+
+`SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, InitializingBean, ApplicationListener<ApplicationEvent>`
+
+- 实现了`FactoryBean`：会在bean初始化时，调用其`afterPropertiesSet()`方法进行bean的逻辑初始化；
+- 实现了`InitializingBean`： 通过getBean获取的实例是此接口实现类 `getObject()`返回的实例；
+
+
+
+那么重点看 `SqlSessionFactoryBean` 的 `afterPropertiesSet()`和 `getObject()` 方法。由于`getObject()`内部也是基于`afterPropertiesSet()`实现，所以重点看`afterPropertiesSet()`方法。
+
+`afterPropertiesSet()`方法主要实现逻辑如下：
+
+. 解析配置：
+.. 如果配置已经解析好，直接使用配置；
+.. 如果没有配置信息，但是有配置地址，那么使用`XMLConfigBuilder`解析配置；
+.. 否则直接生成空配置；
+. 配置别名
+.. `typeAliasesPackages`：包别名
+.. `typeAliases`：类别名
+. 配置插件
+. 配置java类型与数据库类型的映射关系
+.. `typeHandler`
+. 配置ID生成
+. 配置`DataSource`、`TransactionManager`
+. 解析并配置数据映射mapper
+. `SqlSessionFactoryBuilder`使用配置构建`SqlSessionFactory`。
+
+
+
+## SqlSession
+
+SqlSession 完全包含了面向数据库执行 SQL 命令所需的所有方法。你可以通过 SqlSession 实例来直接执行已映射的 SQL 语句。
+
+通过SqlSessionFactory创建方法：
+
+```java,linenums
+public SqlSession openSession() {
+  return openSessionFromDataSource(configuration.getDefaultExecutorType(), null, false);
+}
+private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit) {
+    Transaction tx = null;
+    try {
+      final Environment environment = configuration.getEnvironment();
+      final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
+      tx = transactionFactory.newTransaction(environment.getDataSource(), level, autoCommit);
+      final Executor executor = configuration.newExecutor(tx, execType);
+      return new DefaultSqlSession(configuration, executor, autoCommit);
+    } catch (Exception e) {
+      closeTransaction(tx); // may have fetched a connection so lets call close()
+      throw ExceptionFactory.wrapException("Error opening session.  Cause: " + e, e);
+    } finally {
+      ErrorContext.instance().reset();
+    }
+  }
+```
+
+
+通过`openSession()`方法可知：
+
+. SqlSession默认是`DefaultExecutorType`，即`SIMPLE`。`ExecutorType`包括：
+.. `SIMPLE`: 每个语句创建一个`PreparedStatement`。可以返回自增主键的值（insert语句中设置`useGeneratedKeys="true"` 和 主键在类中的属性`keyProperty`）。
+.. `REUSE`: 重复使用`PreparedStatements`。
+.. `BATCH`： **批量更新**。
+. 事务隔离级别是`null`。
+. `autoCommit=false`事务不自动提交。
+
+
+
+创建的过程是：
+
+image::/img/mybatis工作原理分析/sqlsession构造.svg[sqlsession构造]
+
+
+
+## 执行数据库操作
+
+
+
+SqlSession 调用Executor执行数据库操作&&生成具体SQL指令。
+
+例如`insert`方法:
+
+```java,linenums
+  public int insert(String statement, Object parameter) {
+    return update(statement, parameter);
+  }
+  public int update(String statement, Object parameter) {
+    try {
+      dirty = true;
+      MappedStatement ms = configuration.getMappedStatement(statement);
+      return executor.update(ms, wrapCollection(parameter));
+    } catch (Exception e) {
+      throw ExceptionFactory.wrapException("Error updating database.  Cause: " + e, e);
+    } finally {
+      ErrorContext.instance().reset();
+    }
+  }
+```
+
+从配置中获取`MappedStatement`（使用mapper配置生成的sql映射对象），将插入的数据对象封装成集合（`wrapCollection()`），然后使用sqlsesion的executor执行update操作。
+
+
+
+BaseExecutor的update方法如下：
+
+```java,linenums
+  public int update(MappedStatement ms, Object parameter) throws SQLException {
+    ErrorContext.instance().resource(ms.getResource()).activity("executing an update").object(ms.getId());
+    if (closed) {
+      throw new ExecutorException("Executor was closed.");
+    }
+    clearLocalCache();
+    return doUpdate(ms, parameter);
+  }
+```
+
+核心在于`doUpdate()`，` SimpleExecutor.doUpdate()`如下：
+
+```java,linenums
+  public int doUpdate(MappedStatement ms, Object parameter) throws SQLException {
+    Statement stmt = null;
+    try {
+      Configuration configuration = ms.getConfiguration();
+      // 创建StatementHandler对象，从而创建Statement对象
+      StatementHandler handler = configuration.newStatementHandler(this, ms, parameter, RowBounds.DEFAULT, null, null);
+      // 将sql语句和参数绑定并生成SQL指令
+      stmt = prepareStatement(handler, ms.getStatementLog());
+      return handler.update(stmt);
+    } finally {
+      closeStatement(stmt);
+    }
+  }
+```
+
+依据参数配置创建`StatementHandler`对象，从而创建`Statement`对象，然后执行`Statement`，完成数据库操作。
+
+### 生成Statement
+
+`StatementHandler`将sql语句和参数绑定，对象生成`Statement`：
+
+```java,linenums
+  private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
+    Statement stmt;
+    Connection connection = getConnection(statementLog);
+    // 准备Statement
+    stmt = handler.prepare(connection, transaction.getTimeout());
+    // 设置SQL查询中的参数值
+    handler.parameterize(stmt);
+    return stmt;
+  }
+
+public void setParameters(PreparedStatement ps) {
+    ErrorContext.instance().activity("setting parameters").object(mappedStatement.getParameterMap().getId());
+    List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+    if (parameterMappings != null) {
+      for (int i = 0; i < parameterMappings.size(); i++) {
+        ParameterMapping parameterMapping = parameterMappings.get(i);
+        if (parameterMapping.getMode() != ParameterMode.OUT) {
+          Object value;
+          String propertyName = parameterMapping.getProperty();
+          if (boundSql.hasAdditionalParameter(propertyName)) { // issue #448 ask first for additional params
+            value = boundSql.getAdditionalParameter(propertyName);
+          } else if (parameterObject == null) {
+            value = null;
+          } else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+            value = parameterObject;
+          } else {
+            MetaObject metaObject = configuration.newMetaObject(parameterObject);
+            value = metaObject.getValue(propertyName);
+          }
+          TypeHandler typeHandler = parameterMapping.getTypeHandler();
+          JdbcType jdbcType = parameterMapping.getJdbcType();
+          if (value == null && jdbcType == null) {
+            jdbcType = configuration.getJdbcTypeForNull();
+          }
+          try {
+            typeHandler.setParameter(ps, i + 1, value, jdbcType);
+          } catch (TypeException | SQLException e) {
+            throw new TypeException("Could not set parameters for mapping: " + parameterMapping + ". Cause: " + e, e);
+          }
+        }
+      }
+    }
+  }
+```
+
+. 获取参数映射列表：`boundSql.getParameterMappings()`，
+. 依次绑定参数和值
+. typeHandler处理java对象和数据库数据类型的映射，生成`PreparedStatement`。
+
+
+
+> `ParameterMapping`负责**java对象和jdbc对象的映射**；
+
+
+
+#### boundSql
+
+
+
+要是通过`MappedStatement.getBoundSql()`方法调用获取的:
+
+```java,linenums
+  public BoundSql getBoundSql(Object parameterObject) {
+    // 通过SqlSource获取BoundSql对象
+    BoundSql boundSql = sqlSource.getBoundSql(parameterObject);
+    // 校验当前的sql语句有无绑定parameterMapping属性
+    List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+    if (parameterMappings == null || parameterMappings.isEmpty()) {
+      boundSql = new BoundSql(configuration, boundSql.getSql(), parameterMap.getParameterMappings(), parameterObject);
+    }
+
+    // check for nested result maps in parameter mappings (issue #30)
+    for (ParameterMapping pm : boundSql.getParameterMappings()) {
+      String rmId = pm.getResultMapId();
+      if (rmId != null) {
+        ResultMap rm = configuration.getResultMap(rmId);
+        if (rm != null) {
+          hasNestedResultMaps |= rm.hasNestedResultMaps();
+        }
+      }
+    }
+
+    return boundSql;
+  }
+```
+
+. BoundSql语句的解析主要是通过对`#{}`字符的解析，将其替换成`?`。最后均包装成预表达式供`PrepareStatement`调用执行
+. `#{}`中的key属性以及相应的参数映射，比如`javaType`、`jdbcType`等信息均保存至`BoundSql`的`parameterMappings`属性中供最后的`PrepareStatement`赋值使用。
+
+> BoundSql存储mapper中未解析转换的sql -> PreparedStatement所需的所有类型、参数、值。
+
+### 执行Statement
+
+` SimpleExecutor.doUpdate()`生成`PreparedStatment`后，就执行SQL操作，并生成返回值：
+
+```java,linenums
+public int update(Statement statement) throws SQLException {
+  PreparedStatement ps = (PreparedStatement) statement;
+  ps.execute();
+  int rows = ps.getUpdateCount();
+  Object parameterObject = boundSql.getParameterObject();
+  KeyGenerator keyGenerator = mappedStatement.getKeyGenerator();
+  keyGenerator.processAfter(executor, mappedStatement, ps, parameterObject);
+  return rows;
+}
+```
+
+此处返回操作成功的记录条数。
+
+如果是query操作，返回的是一个`ResultSet`，mybatis将查询结果包装成`ResultSetWrapper`类型，然后一步步对应java类型赋值等。
+
+
+
+## 事务提交
+
+事务提价源码：
+
+```java,linenums
+public void commit() {
+    this.commit(false);
+}
+public void commit(boolean force) {
+    try {
+        // 是否提交（判断是提交还是回滚）
+        this.executor.commit(this.isCommitOrRollbackRequired(force));
+        this.dirty = false;
+    } catch (Exception var6) {
+        throw ExceptionFactory.wrapException("Error committing transaction.  Cause: " + var6, var6);
+    } finally {
+        ErrorContext.instance().reset();
+    }
+}
+//关闭自动提交且dirty=false（表示执行sql过程中无异常）
+private boolean isCommitOrRollbackRequired(boolean force) {
+    return !this.autoCommit && this.dirty || force;
+}
+
+//BaseExecutor的commit方法
+public void commit(boolean required) throws SQLException {
+    this.delegate.commit(required);
+    this.tcm.commit();
+}
+//提交事物，清理本地缓存和刷新statement到数据库持久化存储
+public void commit(boolean required) throws SQLException {
+    if (this.closed) {
+        throw new ExecutorException("Cannot commit, transaction is already closed");
+    } else {
+        this.clearLocalCache();
+        this.flushStatements();
+        if (required) {
+            this.transaction.commit();
+        }
+    }
+}
+//最后调用JDBCTransaction的commit方法：
+public void commit() throws SQLException {
+    if (this.connection != null && !this.connection.getAutoCommit()) {
+        if (log.isDebugEnabled()) {
+            log.debug("Committing JDBC Connection [" + this.connection + "]");
+        }
+        // 提交连接
+        this.connection.commit();
+    }
+}
+```
+
+
+

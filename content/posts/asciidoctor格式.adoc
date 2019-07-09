@@ -155,6 +155,39 @@ There are things to note!
 
 ---
 
+## 列表
+
+### 有序列表
+
+```
+. Step 1
+. Step 2
+. Step 3
+```
+结果是：
+
+. Step 1
+. Step 2
+. Step 3
+
+
+```
+. Step 1
+. Step 2
+.. Step 2a
+.. Step 2b
+. Step 3
+```
+
+结果是：
+
+. Step 1
+. Step 2
+.. Step 2a
+.. Step 2b
+. Step 3
+
+
 ## 代码块
 
 ### 代标注的代码块
