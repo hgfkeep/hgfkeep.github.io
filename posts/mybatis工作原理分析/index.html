@@ -15,14 +15,14 @@
  所以为了顺利的构造出 SqlSessionFactory，必须先构造 org.apache.ibatis.session.Configuration 。该配置可以通过xml解析器（mybatis内建 XMLConfigBuilder 解析处理xml配置）构造。
  MapperFactoryBean获取mapper接口代理类 `MapperFactoryBean`提供了对mapper配置文件的校验和mapper对象的生成，是mapper的工厂对象。
  1 public class MapperFactoryBean&lt;T&gt; extends SqlSessionDaoSupport implements FactoryBean&lt;T&gt;    继承了`SqlSessionDaoSupport`，该类又实现了`InitializingBean`,可知类的逻辑初始化在`afterPropertiesSet()`:
- 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36  //模版初始化方法 public final void afterPropertiesSet() throws IllegalArgumentException, BeanInitializationException { // 抽象父类定义检查配置 checkDaoConfig(); // 具体实现类的模版初始化方法 try { initDao(); } catch (Exception ex) { throw new BeanInitializationException(&#34;"/>
+ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 //模版初始化方法 public final void afterPropertiesSet() throws IllegalArgumentException, BeanInitializationException { // 抽象父类定义检查配置 checkDaoConfig(); // 具体实现类的模版初始化方法 try { initDao(); } catch (Exception ex) { throw new BeanInitializationException(&#34;"/>
 
     <meta property="og:title" content="Mybatis工作原理分析" />
 <meta property="og:description" content="解析配置 mybatis的配置类为 org.apache.ibatis.session.Configuration ，包括了构造 SqlSessionFactory 所需的所有参数。
  所以为了顺利的构造出 SqlSessionFactory，必须先构造 org.apache.ibatis.session.Configuration 。该配置可以通过xml解析器（mybatis内建 XMLConfigBuilder 解析处理xml配置）构造。
  MapperFactoryBean获取mapper接口代理类 `MapperFactoryBean`提供了对mapper配置文件的校验和mapper对象的生成，是mapper的工厂对象。
  1 public class MapperFactoryBean&lt;T&gt; extends SqlSessionDaoSupport implements FactoryBean&lt;T&gt;    继承了`SqlSessionDaoSupport`，该类又实现了`InitializingBean`,可知类的逻辑初始化在`afterPropertiesSet()`:
- 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36  //模版初始化方法 public final void afterPropertiesSet() throws IllegalArgumentException, BeanInitializationException { // 抽象父类定义检查配置 checkDaoConfig(); // 具体实现类的模版初始化方法 try { initDao(); } catch (Exception ex) { throw new BeanInitializationException(&#34;" />
+ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 //模版初始化方法 public final void afterPropertiesSet() throws IllegalArgumentException, BeanInitializationException { // 抽象父类定义检查配置 checkDaoConfig(); // 具体实现类的模版初始化方法 try { initDao(); } catch (Exception ex) { throw new BeanInitializationException(&#34;" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hgfkeep.github.io/posts/mybatis%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" />
 <meta property="article:published_time" content="2019-07-08T16:11:33&#43;08:00"/>
@@ -193,45 +193,39 @@
 31
 32
 33
-34
-35
-36
-</pre></td><td class="code"><pre>  <span class="c1">//模版初始化方法</span>
-	<span class="kd">public</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">afterPropertiesSet</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IllegalArgumentException</span><span class="o">,</span> <span class="nc">BeanInitializationException</span> <span class="o">{</span>
-		<span class="c1">// 抽象父类定义检查配置</span>
-		<span class="n">checkDaoConfig</span><span class="o">();</span>
-
-		<span class="c1">// 具体实现类的模版初始化方法</span>
-		<span class="k">try</span> <span class="o">{</span>
-			<span class="n">initDao</span><span class="o">();</span>
-		<span class="o">}</span>
-		<span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
-			<span class="k">throw</span> <span class="k">new</span> <span class="nf">BeanInitializationException</span><span class="o">(</span><span class="s">"Initialization of DAO failed"</span><span class="o">,</span> <span class="n">ex</span><span class="o">);</span>
-		<span class="o">}</span>
+</pre></td><td class="code"><pre><span class="c1">//模版初始化方法</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">afterPropertiesSet</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IllegalArgumentException</span><span class="o">,</span> <span class="nc">BeanInitializationException</span> <span class="o">{</span>
+	<span class="c1">// 抽象父类定义检查配置</span>
+	<span class="n">checkDaoConfig</span><span class="o">();</span>
+	<span class="c1">// 具体实现类的模版初始化方法</span>
+	<span class="k">try</span> <span class="o">{</span>
+		<span class="n">initDao</span><span class="o">();</span>
 	<span class="o">}</span>
+	<span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">throw</span> <span class="k">new</span> <span class="nf">BeanInitializationException</span><span class="o">(</span><span class="s">"Initialization of DAO failed"</span><span class="o">,</span> <span class="n">ex</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
 
-  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">checkDaoConfig</span><span class="o">()</span> <span class="o">{</span>
-    <span class="kd">super</span><span class="o">.</span><span class="na">checkDaoConfig</span><span class="o">();</span>
-
-    <span class="n">notNull</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">,</span> <span class="s">"Property 'mapperInterface' is required"</span><span class="o">);</span>
-
-    <span class="nc">Configuration</span> <span class="n">configuration</span> <span class="o">=</span> <span class="n">getSqlSession</span><span class="o">().</span><span class="na">getConfiguration</span><span class="o">();</span>
-    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">addToConfig</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">configuration</span><span class="o">.</span><span class="na">hasMapper</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">))</span> <span class="o">{</span>
-      <span class="k">try</span> <span class="o">{</span>
-        <span class="n">configuration</span><span class="o">.</span><span class="na">addMapper</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">);</span>
-      <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-        <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Error while adding the mapper '"</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span> <span class="o">+</span> <span class="s">"' to configuration."</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
-      <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-        <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">reset</span><span class="o">();</span>
-      <span class="o">}</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">checkDaoConfig</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">super</span><span class="o">.</span><span class="na">checkDaoConfig</span><span class="o">();</span>
+  <span class="n">notNull</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">,</span> <span class="s">"Property 'mapperInterface' is required"</span><span class="o">);</span>
+  <span class="nc">Configuration</span> <span class="n">configuration</span> <span class="o">=</span> <span class="n">getSqlSession</span><span class="o">().</span><span class="na">getConfiguration</span><span class="o">();</span>
+  <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">addToConfig</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">configuration</span><span class="o">.</span><span class="na">hasMapper</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">))</span> <span class="o">{</span>
+    <span class="k">try</span> <span class="o">{</span>
+      <span class="n">configuration</span><span class="o">.</span><span class="na">addMapper</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"Error while adding the mapper '"</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span> <span class="o">+</span> <span class="s">"' to configuration."</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+      <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">reset</span><span class="o">();</span>
     <span class="o">}</span>
   <span class="o">}</span>
+<span class="o">}</span>
 
-  <span class="c1">//父类验证sqlsessoin可被创建，</span>
-  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">checkDaoConfig</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">notNull</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">sqlSessionTemplate</span><span class="o">,</span> <span class="s">"Property 'sqlSessionFactory' or 'sqlSessionTemplate' are required"</span><span class="o">);</span>
-  <span class="o">}</span>
+<span class="c1">//父类验证sqlsessoin可被创建，</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">checkDaoConfig</span><span class="o">()</span> <span class="o">{</span>
+  <span class="n">notNull</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">sqlSessionTemplate</span><span class="o">,</span> <span class="s">"Property 'sqlSessionFactory' or 'sqlSessionTemplate' are required"</span><span class="o">);</span>
+<span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -253,9 +247,9 @@
 <pre class="rouge highlight"><code data-lang="java"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
-</pre></td><td class="code"><pre>  <span class="kd">public</span> <span class="no">T</span> <span class="nf">getObject</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="nf">getSqlSession</span><span class="o">().</span><span class="na">getMapper</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">);</span>
-  <span class="o">}</span>
+</pre></td><td class="code"><pre><span class="kd">public</span> <span class="no">T</span> <span class="nf">getObject</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="nf">getSqlSession</span><span class="o">().</span><span class="na">getMapper</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">);</span>
+<span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -383,20 +377,20 @@
   <span class="k">return</span> <span class="nf">openSessionFromDataSource</span><span class="o">(</span><span class="n">configuration</span><span class="o">.</span><span class="na">getDefaultExecutorType</span><span class="o">(),</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
 <span class="o">}</span>
 <span class="kd">private</span> <span class="nc">SqlSession</span> <span class="nf">openSessionFromDataSource</span><span class="o">(</span><span class="nc">ExecutorType</span> <span class="n">execType</span><span class="o">,</span> <span class="nc">TransactionIsolationLevel</span> <span class="n">level</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">autoCommit</span><span class="o">)</span> <span class="o">{</span>
-    <span class="nc">Transaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="k">try</span> <span class="o">{</span>
-      <span class="kd">final</span> <span class="nc">Environment</span> <span class="n">environment</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getEnvironment</span><span class="o">();</span>
-      <span class="kd">final</span> <span class="nc">TransactionFactory</span> <span class="n">transactionFactory</span> <span class="o">=</span> <span class="n">getTransactionFactoryFromEnvironment</span><span class="o">(</span><span class="n">environment</span><span class="o">);</span>
-      <span class="n">tx</span> <span class="o">=</span> <span class="n">transactionFactory</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">(</span><span class="n">environment</span><span class="o">.</span><span class="na">getDataSource</span><span class="o">(),</span> <span class="n">level</span><span class="o">,</span> <span class="n">autoCommit</span><span class="o">);</span>
-      <span class="kd">final</span> <span class="nc">Executor</span> <span class="n">executor</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">newExecutor</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">execType</span><span class="o">);</span>
-      <span class="k">return</span> <span class="k">new</span> <span class="nf">DefaultSqlSession</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">executor</span><span class="o">,</span> <span class="n">autoCommit</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-      <span class="n">closeTransaction</span><span class="o">(</span><span class="n">tx</span><span class="o">);</span> <span class="c1">// may have fetched a connection so lets call close()</span>
-      <span class="k">throw</span> <span class="nc">ExceptionFactory</span><span class="o">.</span><span class="na">wrapException</span><span class="o">(</span><span class="s">"Error opening session.  Cause: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-      <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">reset</span><span class="o">();</span>
-    <span class="o">}</span>
+  <span class="nc">Transaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="k">try</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="nc">Environment</span> <span class="n">environment</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getEnvironment</span><span class="o">();</span>
+    <span class="kd">final</span> <span class="nc">TransactionFactory</span> <span class="n">transactionFactory</span> <span class="o">=</span> <span class="n">getTransactionFactoryFromEnvironment</span><span class="o">(</span><span class="n">environment</span><span class="o">);</span>
+    <span class="n">tx</span> <span class="o">=</span> <span class="n">transactionFactory</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">(</span><span class="n">environment</span><span class="o">.</span><span class="na">getDataSource</span><span class="o">(),</span> <span class="n">level</span><span class="o">,</span> <span class="n">autoCommit</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="nc">Executor</span> <span class="n">executor</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">newExecutor</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">execType</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">DefaultSqlSession</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">executor</span><span class="o">,</span> <span class="n">autoCommit</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">closeTransaction</span><span class="o">(</span><span class="n">tx</span><span class="o">);</span> <span class="c1">// may have fetched a connection so lets call close()</span>
+    <span class="k">throw</span> <span class="nc">ExceptionFactory</span><span class="o">.</span><span class="na">wrapException</span><span class="o">(</span><span class="s">"Error opening session.  Cause: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+    <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">reset</span><span class="o">();</span>
   <span class="o">}</span>
+<span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -464,20 +458,20 @@
 12
 13
 14
-</pre></td><td class="code"><pre>  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">insert</span><span class="o">(</span><span class="nc">String</span> <span class="n">statement</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="nf">update</span><span class="o">(</span><span class="n">statement</span><span class="o">,</span> <span class="n">parameter</span><span class="o">);</span>
+</pre></td><td class="code"><pre><span class="kd">public</span> <span class="kt">int</span> <span class="nf">insert</span><span class="o">(</span><span class="nc">String</span> <span class="n">statement</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="nf">update</span><span class="o">(</span><span class="n">statement</span><span class="o">,</span> <span class="n">parameter</span><span class="o">);</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">update</span><span class="o">(</span><span class="nc">String</span> <span class="n">statement</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">try</span> <span class="o">{</span>
+    <span class="n">dirty</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="nc">MappedStatement</span> <span class="n">ms</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getMappedStatement</span><span class="o">(</span><span class="n">statement</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">executor</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">ms</span><span class="o">,</span> <span class="n">wrapCollection</span><span class="o">(</span><span class="n">parameter</span><span class="o">));</span>
+  <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="nc">ExceptionFactory</span><span class="o">.</span><span class="na">wrapException</span><span class="o">(</span><span class="s">"Error updating database.  Cause: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+    <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">reset</span><span class="o">();</span>
   <span class="o">}</span>
-  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">update</span><span class="o">(</span><span class="nc">String</span> <span class="n">statement</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">try</span> <span class="o">{</span>
-      <span class="n">dirty</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-      <span class="nc">MappedStatement</span> <span class="n">ms</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getMappedStatement</span><span class="o">(</span><span class="n">statement</span><span class="o">);</span>
-      <span class="k">return</span> <span class="n">executor</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">ms</span><span class="o">,</span> <span class="n">wrapCollection</span><span class="o">(</span><span class="n">parameter</span><span class="o">));</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-      <span class="k">throw</span> <span class="nc">ExceptionFactory</span><span class="o">.</span><span class="na">wrapException</span><span class="o">(</span><span class="s">"Error updating database.  Cause: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-      <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">reset</span><span class="o">();</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
+<span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -497,14 +491,14 @@
 6
 7
 8
-</pre></td><td class="code"><pre>  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">update</span><span class="o">(</span><span class="nc">MappedStatement</span> <span class="n">ms</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
-    <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">resource</span><span class="o">(</span><span class="n">ms</span><span class="o">.</span><span class="na">getResource</span><span class="o">()).</span><span class="na">activity</span><span class="o">(</span><span class="s">"executing an update"</span><span class="o">).</span><span class="na">object</span><span class="o">(</span><span class="n">ms</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">closed</span><span class="o">)</span> <span class="o">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nf">ExecutorException</span><span class="o">(</span><span class="s">"Executor was closed."</span><span class="o">);</span>
-    <span class="o">}</span>
-    <span class="n">clearLocalCache</span><span class="o">();</span>
-    <span class="k">return</span> <span class="nf">doUpdate</span><span class="o">(</span><span class="n">ms</span><span class="o">,</span> <span class="n">parameter</span><span class="o">);</span>
+</pre></td><td class="code"><pre><span class="kd">public</span> <span class="kt">int</span> <span class="nf">update</span><span class="o">(</span><span class="nc">MappedStatement</span> <span class="n">ms</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+  <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">resource</span><span class="o">(</span><span class="n">ms</span><span class="o">.</span><span class="na">getResource</span><span class="o">()).</span><span class="na">activity</span><span class="o">(</span><span class="s">"executing an update"</span><span class="o">).</span><span class="na">object</span><span class="o">(</span><span class="n">ms</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">closed</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">ExecutorException</span><span class="o">(</span><span class="s">"Executor was closed."</span><span class="o">);</span>
   <span class="o">}</span>
+  <span class="n">clearLocalCache</span><span class="o">();</span>
+  <span class="k">return</span> <span class="nf">doUpdate</span><span class="o">(</span><span class="n">ms</span><span class="o">,</span> <span class="n">parameter</span><span class="o">);</span>
+<span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -526,19 +520,19 @@
 11
 12
 13
-</pre></td><td class="code"><pre>  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">doUpdate</span><span class="o">(</span><span class="nc">MappedStatement</span> <span class="n">ms</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
-    <span class="nc">Statement</span> <span class="n">stmt</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-    <span class="k">try</span> <span class="o">{</span>
-      <span class="nc">Configuration</span> <span class="n">configuration</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="na">getConfiguration</span><span class="o">();</span>
-      <span class="c1">// 创建StatementHandler对象，从而创建Statement对象</span>
-      <span class="nc">StatementHandler</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">newStatementHandler</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">ms</span><span class="o">,</span> <span class="n">parameter</span><span class="o">,</span> <span class="nc">RowBounds</span><span class="o">.</span><span class="na">DEFAULT</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
-      <span class="c1">// 将sql语句和参数绑定并生成SQL指令</span>
-      <span class="n">stmt</span> <span class="o">=</span> <span class="n">prepareStatement</span><span class="o">(</span><span class="n">handler</span><span class="o">,</span> <span class="n">ms</span><span class="o">.</span><span class="na">getStatementLog</span><span class="o">());</span>
-      <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">stmt</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-      <span class="n">closeStatement</span><span class="o">(</span><span class="n">stmt</span><span class="o">);</span>
-    <span class="o">}</span>
+</pre></td><td class="code"><pre><span class="kd">public</span> <span class="kt">int</span> <span class="nf">doUpdate</span><span class="o">(</span><span class="nc">MappedStatement</span> <span class="n">ms</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+  <span class="nc">Statement</span> <span class="n">stmt</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="k">try</span> <span class="o">{</span>
+    <span class="nc">Configuration</span> <span class="n">configuration</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="na">getConfiguration</span><span class="o">();</span>
+    <span class="c1">// 创建StatementHandler对象，从而创建Statement对象</span>
+    <span class="nc">StatementHandler</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">newStatementHandler</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">ms</span><span class="o">,</span> <span class="n">parameter</span><span class="o">,</span> <span class="nc">RowBounds</span><span class="o">.</span><span class="na">DEFAULT</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+    <span class="c1">// 将sql语句和参数绑定并生成SQL指令</span>
+    <span class="n">stmt</span> <span class="o">=</span> <span class="n">prepareStatement</span><span class="o">(</span><span class="n">handler</span><span class="o">,</span> <span class="n">ms</span><span class="o">.</span><span class="na">getStatementLog</span><span class="o">());</span>
+    <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="na">update</span><span class="o">(</span><span class="n">stmt</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+    <span class="n">closeStatement</span><span class="o">(</span><span class="n">stmt</span><span class="o">);</span>
   <span class="o">}</span>
+<span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -594,50 +588,48 @@
 40
 41
 42
-43
-</pre></td><td class="code"><pre>  <span class="kd">private</span> <span class="nc">Statement</span> <span class="nf">prepareStatement</span><span class="o">(</span><span class="nc">StatementHandler</span> <span class="n">handler</span><span class="o">,</span> <span class="nc">Log</span> <span class="n">statementLog</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
-    <span class="nc">Statement</span> <span class="n">stmt</span><span class="o">;</span>
-    <span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">getConnection</span><span class="o">(</span><span class="n">statementLog</span><span class="o">);</span>
-    <span class="c1">// 准备Statement</span>
-    <span class="n">stmt</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="na">prepare</span><span class="o">(</span><span class="n">connection</span><span class="o">,</span> <span class="n">transaction</span><span class="o">.</span><span class="na">getTimeout</span><span class="o">());</span>
-    <span class="c1">// 设置SQL查询中的参数值</span>
-    <span class="n">handler</span><span class="o">.</span><span class="na">parameterize</span><span class="o">(</span><span class="n">stmt</span><span class="o">);</span>
-    <span class="k">return</span> <span class="n">stmt</span><span class="o">;</span>
-  <span class="o">}</span>
-
+</pre></td><td class="code"><pre><span class="kd">private</span> <span class="nc">Statement</span> <span class="nf">prepareStatement</span><span class="o">(</span><span class="nc">StatementHandler</span> <span class="n">handler</span><span class="o">,</span> <span class="nc">Log</span> <span class="n">statementLog</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+  <span class="nc">Statement</span> <span class="n">stmt</span><span class="o">;</span>
+  <span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="n">getConnection</span><span class="o">(</span><span class="n">statementLog</span><span class="o">);</span>
+  <span class="c1">// 准备Statement</span>
+  <span class="n">stmt</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="na">prepare</span><span class="o">(</span><span class="n">connection</span><span class="o">,</span> <span class="n">transaction</span><span class="o">.</span><span class="na">getTimeout</span><span class="o">());</span>
+  <span class="c1">// 设置SQL查询中的参数值</span>
+  <span class="n">handler</span><span class="o">.</span><span class="na">parameterize</span><span class="o">(</span><span class="n">stmt</span><span class="o">);</span>
+  <span class="k">return</span> <span class="n">stmt</span><span class="o">;</span>
+<span class="o">}</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setParameters</span><span class="o">(</span><span class="nc">PreparedStatement</span> <span class="n">ps</span><span class="o">)</span> <span class="o">{</span>
-    <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">activity</span><span class="o">(</span><span class="s">"setting parameters"</span><span class="o">).</span><span class="na">object</span><span class="o">(</span><span class="n">mappedStatement</span><span class="o">.</span><span class="na">getParameterMap</span><span class="o">().</span><span class="na">getId</span><span class="o">());</span>
-    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ParameterMapping</span><span class="o">&gt;</span> <span class="n">parameterMappings</span> <span class="o">=</span> <span class="n">boundSql</span><span class="o">.</span><span class="na">getParameterMappings</span><span class="o">();</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">parameterMappings</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-      <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">parameterMappings</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-        <span class="nc">ParameterMapping</span> <span class="n">parameterMapping</span> <span class="o">=</span> <span class="n">parameterMappings</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">parameterMapping</span><span class="o">.</span><span class="na">getMode</span><span class="o">()</span> <span class="o">!=</span> <span class="nc">ParameterMode</span><span class="o">.</span><span class="na">OUT</span><span class="o">)</span> <span class="o">{</span>
-          <span class="nc">Object</span> <span class="n">value</span><span class="o">;</span>
-          <span class="nc">String</span> <span class="n">propertyName</span> <span class="o">=</span> <span class="n">parameterMapping</span><span class="o">.</span><span class="na">getProperty</span><span class="o">();</span>
-          <span class="k">if</span> <span class="o">(</span><span class="n">boundSql</span><span class="o">.</span><span class="na">hasAdditionalParameter</span><span class="o">(</span><span class="n">propertyName</span><span class="o">))</span> <span class="o">{</span> <span class="c1">// issue #448 ask first for additional params</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">boundSql</span><span class="o">.</span><span class="na">getAdditionalParameter</span><span class="o">(</span><span class="n">propertyName</span><span class="o">);</span>
-          <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">parameterObject</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-          <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">typeHandlerRegistry</span><span class="o">.</span><span class="na">hasTypeHandler</span><span class="o">(</span><span class="n">parameterObject</span><span class="o">.</span><span class="na">getClass</span><span class="o">()))</span> <span class="o">{</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">parameterObject</span><span class="o">;</span>
-          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-            <span class="nc">MetaObject</span> <span class="n">metaObject</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">newMetaObject</span><span class="o">(</span><span class="n">parameterObject</span><span class="o">);</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="n">propertyName</span><span class="o">);</span>
-          <span class="o">}</span>
-          <span class="nc">TypeHandler</span> <span class="n">typeHandler</span> <span class="o">=</span> <span class="n">parameterMapping</span><span class="o">.</span><span class="na">getTypeHandler</span><span class="o">();</span>
-          <span class="nc">JdbcType</span> <span class="n">jdbcType</span> <span class="o">=</span> <span class="n">parameterMapping</span><span class="o">.</span><span class="na">getJdbcType</span><span class="o">();</span>
-          <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">jdbcType</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">jdbcType</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getJdbcTypeForNull</span><span class="o">();</span>
-          <span class="o">}</span>
-          <span class="k">try</span> <span class="o">{</span>
-            <span class="n">typeHandler</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="n">ps</span><span class="o">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">value</span><span class="o">,</span> <span class="n">jdbcType</span><span class="o">);</span>
-          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">TypeException</span> <span class="o">|</span> <span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">throw</span> <span class="k">new</span> <span class="nf">TypeException</span><span class="o">(</span><span class="s">"Could not set parameters for mapping: "</span> <span class="o">+</span> <span class="n">parameterMapping</span> <span class="o">+</span> <span class="s">". Cause: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
-          <span class="o">}</span>
+  <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">activity</span><span class="o">(</span><span class="s">"setting parameters"</span><span class="o">).</span><span class="na">object</span><span class="o">(</span><span class="n">mappedStatement</span><span class="o">.</span><span class="na">getParameterMap</span><span class="o">().</span><span class="na">getId</span><span class="o">());</span>
+  <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ParameterMapping</span><span class="o">&gt;</span> <span class="n">parameterMappings</span> <span class="o">=</span> <span class="n">boundSql</span><span class="o">.</span><span class="na">getParameterMappings</span><span class="o">();</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">parameterMappings</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">parameterMappings</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+      <span class="nc">ParameterMapping</span> <span class="n">parameterMapping</span> <span class="o">=</span> <span class="n">parameterMappings</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">parameterMapping</span><span class="o">.</span><span class="na">getMode</span><span class="o">()</span> <span class="o">!=</span> <span class="nc">ParameterMode</span><span class="o">.</span><span class="na">OUT</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Object</span> <span class="n">value</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">propertyName</span> <span class="o">=</span> <span class="n">parameterMapping</span><span class="o">.</span><span class="na">getProperty</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">boundSql</span><span class="o">.</span><span class="na">hasAdditionalParameter</span><span class="o">(</span><span class="n">propertyName</span><span class="o">))</span> <span class="o">{</span> <span class="c1">// issue #448 ask first for additional params</span>
+          <span class="n">value</span> <span class="o">=</span> <span class="n">boundSql</span><span class="o">.</span><span class="na">getAdditionalParameter</span><span class="o">(</span><span class="n">propertyName</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">parameterObject</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">value</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">typeHandlerRegistry</span><span class="o">.</span><span class="na">hasTypeHandler</span><span class="o">(</span><span class="n">parameterObject</span><span class="o">.</span><span class="na">getClass</span><span class="o">()))</span> <span class="o">{</span>
+          <span class="n">value</span> <span class="o">=</span> <span class="n">parameterObject</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+          <span class="nc">MetaObject</span> <span class="n">metaObject</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">newMetaObject</span><span class="o">(</span><span class="n">parameterObject</span><span class="o">);</span>
+          <span class="n">value</span> <span class="o">=</span> <span class="n">metaObject</span><span class="o">.</span><span class="na">getValue</span><span class="o">(</span><span class="n">propertyName</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="nc">TypeHandler</span> <span class="n">typeHandler</span> <span class="o">=</span> <span class="n">parameterMapping</span><span class="o">.</span><span class="na">getTypeHandler</span><span class="o">();</span>
+        <span class="nc">JdbcType</span> <span class="n">jdbcType</span> <span class="o">=</span> <span class="n">parameterMapping</span><span class="o">.</span><span class="na">getJdbcType</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">jdbcType</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">jdbcType</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getJdbcTypeForNull</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">try</span> <span class="o">{</span>
+          <span class="n">typeHandler</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="n">ps</span><span class="o">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">value</span><span class="o">,</span> <span class="n">jdbcType</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">TypeException</span> <span class="o">|</span> <span class="nc">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">throw</span> <span class="k">new</span> <span class="nf">TypeException</span><span class="o">(</span><span class="s">"Could not set parameters for mapping: "</span> <span class="o">+</span> <span class="n">parameterMapping</span> <span class="o">+</span> <span class="s">". Cause: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">,</span> <span class="n">e</span><span class="o">);</span>
         <span class="o">}</span>
       <span class="o">}</span>
     <span class="o">}</span>
   <span class="o">}</span>
+<span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -688,30 +680,26 @@
 18
 19
 20
-21
-22
-</pre></td><td class="code"><pre>  <span class="kd">public</span> <span class="nc">BoundSql</span> <span class="nf">getBoundSql</span><span class="o">(</span><span class="nc">Object</span> <span class="n">parameterObject</span><span class="o">)</span> <span class="o">{</span>
-    <span class="c1">// 通过SqlSource获取BoundSql对象</span>
-    <span class="nc">BoundSql</span> <span class="n">boundSql</span> <span class="o">=</span> <span class="n">sqlSource</span><span class="o">.</span><span class="na">getBoundSql</span><span class="o">(</span><span class="n">parameterObject</span><span class="o">);</span>
-    <span class="c1">// 校验当前的sql语句有无绑定parameterMapping属性</span>
-    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ParameterMapping</span><span class="o">&gt;</span> <span class="n">parameterMappings</span> <span class="o">=</span> <span class="n">boundSql</span><span class="o">.</span><span class="na">getParameterMappings</span><span class="o">();</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">parameterMappings</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">parameterMappings</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
-      <span class="n">boundSql</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BoundSql</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">boundSql</span><span class="o">.</span><span class="na">getSql</span><span class="o">(),</span> <span class="n">parameterMap</span><span class="o">.</span><span class="na">getParameterMappings</span><span class="o">(),</span> <span class="n">parameterObject</span><span class="o">);</span>
-    <span class="o">}</span>
-
-    <span class="c1">// check for nested result maps in parameter mappings (issue #30)</span>
-    <span class="k">for</span> <span class="o">(</span><span class="nc">ParameterMapping</span> <span class="n">pm</span> <span class="o">:</span> <span class="n">boundSql</span><span class="o">.</span><span class="na">getParameterMappings</span><span class="o">())</span> <span class="o">{</span>
-      <span class="nc">String</span> <span class="n">rmId</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="na">getResultMapId</span><span class="o">();</span>
-      <span class="k">if</span> <span class="o">(</span><span class="n">rmId</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-        <span class="nc">ResultMap</span> <span class="n">rm</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getResultMap</span><span class="o">(</span><span class="n">rmId</span><span class="o">);</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">rm</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-          <span class="n">hasNestedResultMaps</span> <span class="o">|=</span> <span class="n">rm</span><span class="o">.</span><span class="na">hasNestedResultMaps</span><span class="o">();</span>
-        <span class="o">}</span>
+</pre></td><td class="code"><pre><span class="kd">public</span> <span class="nc">BoundSql</span> <span class="nf">getBoundSql</span><span class="o">(</span><span class="nc">Object</span> <span class="n">parameterObject</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// 通过SqlSource获取BoundSql对象</span>
+  <span class="nc">BoundSql</span> <span class="n">boundSql</span> <span class="o">=</span> <span class="n">sqlSource</span><span class="o">.</span><span class="na">getBoundSql</span><span class="o">(</span><span class="n">parameterObject</span><span class="o">);</span>
+  <span class="c1">// 校验当前的sql语句有无绑定parameterMapping属性</span>
+  <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ParameterMapping</span><span class="o">&gt;</span> <span class="n">parameterMappings</span> <span class="o">=</span> <span class="n">boundSql</span><span class="o">.</span><span class="na">getParameterMappings</span><span class="o">();</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">parameterMappings</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">parameterMappings</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+    <span class="n">boundSql</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BoundSql</span><span class="o">(</span><span class="n">configuration</span><span class="o">,</span> <span class="n">boundSql</span><span class="o">.</span><span class="na">getSql</span><span class="o">(),</span> <span class="n">parameterMap</span><span class="o">.</span><span class="na">getParameterMappings</span><span class="o">(),</span> <span class="n">parameterObject</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="c1">// check for nested result maps in parameter mappings (issue #30)</span>
+  <span class="k">for</span> <span class="o">(</span><span class="nc">ParameterMapping</span> <span class="n">pm</span> <span class="o">:</span> <span class="n">boundSql</span><span class="o">.</span><span class="na">getParameterMappings</span><span class="o">())</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">rmId</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="na">getResultMapId</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">rmId</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="nc">ResultMap</span> <span class="n">rm</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getResultMap</span><span class="o">(</span><span class="n">rmId</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">rm</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">hasNestedResultMaps</span> <span class="o">|=</span> <span class="n">rm</span><span class="o">.</span><span class="na">hasNestedResultMaps</span><span class="o">();</span>
       <span class="o">}</span>
     <span class="o">}</span>
-
-    <span class="k">return</span> <span class="n">boundSql</span><span class="o">;</span>
   <span class="o">}</span>
+  <span class="k">return</span> <span class="n">boundSql</span><span class="o">;</span>
+<span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -829,15 +817,15 @@
     <span class="k">this</span><span class="o">.</span><span class="na">commit</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
 <span class="o">}</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">commit</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">force</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">try</span> <span class="o">{</span>
-        <span class="c1">// 是否提交（判断是提交还是回滚）</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">executor</span><span class="o">.</span><span class="na">commit</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">isCommitOrRollbackRequired</span><span class="o">(</span><span class="n">force</span><span class="o">));</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">dirty</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
-    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">var6</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">throw</span> <span class="nc">ExceptionFactory</span><span class="o">.</span><span class="na">wrapException</span><span class="o">(</span><span class="s">"Error committing transaction.  Cause: "</span> <span class="o">+</span> <span class="n">var6</span><span class="o">,</span> <span class="n">var6</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-        <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">reset</span><span class="o">();</span>
-    <span class="o">}</span>
+  <span class="k">try</span> <span class="o">{</span>
+      <span class="c1">// 是否提交（判断是提交还是回滚）</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">executor</span><span class="o">.</span><span class="na">commit</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">isCommitOrRollbackRequired</span><span class="o">(</span><span class="n">force</span><span class="o">));</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">dirty</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+  <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">var6</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="nc">ExceptionFactory</span><span class="o">.</span><span class="na">wrapException</span><span class="o">(</span><span class="s">"Error committing transaction.  Cause: "</span> <span class="o">+</span> <span class="n">var6</span><span class="o">,</span> <span class="n">var6</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+      <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">reset</span><span class="o">();</span>
+  <span class="o">}</span>
 <span class="o">}</span>
 <span class="c1">//关闭自动提交且dirty=false（表示执行sql过程中无异常）</span>
 <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isCommitOrRollbackRequired</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">force</span><span class="o">)</span> <span class="o">{</span>
@@ -846,30 +834,30 @@
 
 <span class="c1">//BaseExecutor的commit方法</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">commit</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">required</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">delegate</span><span class="o">.</span><span class="na">commit</span><span class="o">(</span><span class="n">required</span><span class="o">);</span>
-    <span class="k">this</span><span class="o">.</span><span class="na">tcm</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">delegate</span><span class="o">.</span><span class="na">commit</span><span class="o">(</span><span class="n">required</span><span class="o">);</span>
+  <span class="k">this</span><span class="o">.</span><span class="na">tcm</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
 <span class="o">}</span>
 <span class="c1">//提交事物，清理本地缓存和刷新statement到数据库持久化存储</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">commit</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">required</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">closed</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="nf">ExecutorException</span><span class="o">(</span><span class="s">"Cannot commit, transaction is already closed"</span><span class="o">);</span>
-    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">clearLocalCache</span><span class="o">();</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">flushStatements</span><span class="o">();</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">required</span><span class="o">)</span> <span class="o">{</span>
-            <span class="k">this</span><span class="o">.</span><span class="na">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">closed</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nf">ExecutorException</span><span class="o">(</span><span class="s">"Cannot commit, transaction is already closed"</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">clearLocalCache</span><span class="o">();</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">flushStatements</span><span class="o">();</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">required</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">this</span><span class="o">.</span><span class="na">transaction</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
 <span class="o">}</span>
 <span class="c1">//最后调用JDBCTransaction的commit方法：</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">commit</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">connection</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="o">.</span><span class="na">connection</span><span class="o">.</span><span class="na">getAutoCommit</span><span class="o">())</span> <span class="o">{</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">log</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
-            <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Committing JDBC Connection ["</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">connection</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">);</span>
-        <span class="o">}</span>
-        <span class="c1">// 提交连接</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">connection</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
-    <span class="o">}</span>
+  <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">connection</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="k">this</span><span class="o">.</span><span class="na">connection</span><span class="o">.</span><span class="na">getAutoCommit</span><span class="o">())</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">log</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
+          <span class="n">log</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">"Committing JDBC Connection ["</span> <span class="o">+</span> <span class="k">this</span><span class="o">.</span><span class="na">connection</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">);</span>
+      <span class="o">}</span>
+      <span class="c1">// 提交连接</span>
+      <span class="k">this</span><span class="o">.</span><span class="na">connection</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+  <span class="o">}</span>
 <span class="o">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
