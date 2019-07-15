@@ -131,7 +131,7 @@ r b swpd    free     buff cache  si so bi bo in  cs  us sy id wa st
 
 ```
 avg-CPU: %user %nice %system %iowait %steal %idle
-				 18.20 0.00   40.20   0.00    0.00   51.60
+	 18.20 0.00   40.20   0.00    0.00   51.60
 Device: rrqm/s wrqm/s r/s  w/s   rMB/s wMB/s avgrq-sz avgqu-sz await svctm %util 
 sda     0.00   0.20   0.00 34.60 0.10  0.23  8.35     0.00    5.04  0.04   2.02
 ```
