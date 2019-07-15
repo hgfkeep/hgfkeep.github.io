@@ -229,7 +229,7 @@ r b swpd    free     buff cache  si so bi bo in  cs  us sy id wa st
 
 <p>在linux中执行<code>iostat -xm 5</code> ，我的结果如下：</p>
 <div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">avg-CPU: %user %nice %system %iowait %steal %idle
-				 18.20 0.00   40.20   0.00    0.00   51.60
+	 18.20 0.00   40.20   0.00    0.00   51.60
 Device: rrqm/s wrqm/s r/s  w/s   rMB/s wMB/s avgrq-sz avgqu-sz await svctm %util 
 sda     0.00   0.20   0.00 34.60 0.10  0.23  8.35     0.00    5.04  0.04   2.02</pre></div>
 <p>磁盘写入等待时间为5.04ms，磁盘的使用率2.02%， 但是系统执行内核操作用掉了40.02%的时间，这意味着应用程序中存在着低效的写操作。系统每秒进行 $34.60(w/s)$ 次写操作，但是只写入了 $0.23MB(wMB/s)$ 数据。可以判断是IO的性能瓶颈。</p>
