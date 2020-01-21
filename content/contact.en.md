@@ -1,11 +1,11 @@
 +++
-title = "Contato"
+title = "Contact"
 slug = "contact"
 +++
 
 👏Follow me:
 
-1. @[github](https://github.com/hgfkeep)
-2. @[docker hub](https://hub.docker.com/u/hgfkeep)
-3. @hgfkeep@gmail.com
+* @[github](https://github.com/hgfkeep)
+* @[docker hub](https://hub.docker.com/u/hgfkeep)
+* email:hgfkeep@gmail.com
 
