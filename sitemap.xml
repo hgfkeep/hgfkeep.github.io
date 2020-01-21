@@ -65,13 +65,13 @@
   </url>
   
   <url>
-    <loc>https://hgfkeep.github.io/categories/markdown/</loc>
+    <loc>https://hgfkeep.github.io/tags/markdown/</loc>
     <lastmod>2019-06-25T16:33:26+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://hgfkeep.github.io/tags/markdown/</loc>
+    <loc>https://hgfkeep.github.io/categories/markdown/</loc>
     <lastmod>2019-06-25T16:33:26+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -122,6 +122,14 @@
   
   <url>
     <loc>https://hgfkeep.github.io/about/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hgfkeep.github.io/flag/</loc>
+  </url>
+  
+  <url>
+    <loc>https://hgfkeep.github.io/flag/</loc>
   </url>
   
 </urlset>

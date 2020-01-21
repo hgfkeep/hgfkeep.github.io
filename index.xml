@@ -124,7 +124,8 @@ typora-root-url: ../../static
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://hgfkeep.github.io/contact/</guid>
-      <description>Follow me, @johndoe.</description>
+      <description>👏Follow me:
+ @github @docker hub @hgfkeep@gmail.com  </description>
     </item>
     
     <item>
@@ -133,7 +134,8 @@ typora-root-url: ../../static
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://hgfkeep.github.io/contact/</guid>
-      <description>Me siga em @joaoninguem.</description>
+      <description>👏Follow me:
+ @github @docker hub @email  </description>
     </item>
     
     <item>
@@ -181,6 +183,24 @@ typora-root-url: ../../static
       <description>👏欢迎您!
 我是heguangfu。
 Thanks for reading!🙏</description>
+    </item>
+    
+    <item>
+      <title>🚩Flag 2020</title>
+      <link>https://hgfkeep.github.io/flag/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://hgfkeep.github.io/flag/</guid>
+      <description> Flag learn rust深入浅出 rust track ES-极客时间 设计模式-极客时间  des &amp;amp; dev rust markdown rust KV cache  source code kafka es  arrangement Weekly  2 rust track  Monthly  2 design pattern  </description>
+    </item>
+    
+    <item>
+      <title>🚩Flag 2020</title>
+      <link>https://hgfkeep.github.io/flag/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://hgfkeep.github.io/flag/</guid>
+      <description> Flag 学习 rust深入浅出 rust track ES-极客时间 设计模式-极客时间  开发 rust markdown rust KV cache  源代码 kafka 阅读 es 阅读  周期安排 每周  2个rust track  每月  2个设计模式  </description>
     </item>
     
   </channel>
