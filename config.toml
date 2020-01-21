@@ -84,8 +84,13 @@ disqusShortname = "hgfkeep"
         url = "/series/"
 
         [[languages.zh-cn.menu.main]]
-        name = "联系我"
+        name = "目标"
         weight = 5
+        url = "/flag/"
+
+        [[languages.zh-cn.menu.main]]
+        name = "联系我"
+        weight = 6
         url = "/contact/"
 
 
