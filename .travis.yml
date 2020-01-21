@@ -11,12 +11,12 @@ services:
   - docker
 
 before_install:
-  - docker pull hgfkeep/hugo-asciidoc:latest
+  - docker pull hgfkeep/hugo-asciidoc:all
 
 
 # script - run the build script
 script:
-    - docker run --rm -v $PWD:/hugo hgfkeep/hugo-asciidoc:latest hugo
+    - docker run --rm -v $PWD:/hugo hgfkeep/hugo-asciidoc:all hugo
 
 deploy:
   provider: pages
