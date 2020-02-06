@@ -95,7 +95,16 @@ external helpers支持情况 各类型文件后缀主持如下：
     </item>
     
     <item>
-      <title>使用hugo创建博客</title>
+      <title>如何使用typora编写Hugo draft</title>
+      <link>https://hgfkeep.github.io/posts/how-to-write-draft-in-hugo/</link>
+      <pubDate>Tue, 25 Jun 2019 16:33:26 +0800</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/how-to-write-draft-in-hugo/</guid>
+      <description>&lt;p&gt;本文主要讲解如何使用typora编写hugo 文章，达到本地编辑实时预览，和真正部署的结果一致。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>更新kubernetes 过期证书</title>
       <link>https://hgfkeep.github.io/posts/%E6%9B%B4%E6%96%B0kubernetes%E8%AF%81%E4%B9%A6/</link>
       <pubDate>Tue, 25 Jun 2019 16:33:26 +0800</pubDate>
       
@@ -106,15 +115,6 @@ external helpers支持情况 各类型文件后缀主持如下：
 openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep &amp;#39; Not &amp;#39;  ⚠️ kubeadm 默认生成的ca证书有效期是10年，其他证书（如etcd证书，apiserver证书）有效期均为1年。
  更新证书和配置 整体思路： 1. 备份：在进行证书更新前，建议备份/etc/kubernetes，防止操作失误。 2. 更新证书：使用kubeadm alpha certs renew重新生成证书。仅更新***.key文件，需要原始的crt文件才能生成对应的key文件。 3. 更新配置：使用kubeadm init phase kubeconfig all --config ${kubeadm.yaml配置文件}或者kubeadm alpha kubeconfig user 命令。
  ⚠️ 不同版本的kubeadm对于证书renew的命令有细微的差异，具体情况需要依据已经安装的kubeadm来判断。通过命令行kubeadm alpha certs renew --help输出类似如下信息：  证书更新策略： * 单主节点：可以直接运行kubeadm alpha certs renew all --config kubeadm.</description>
-    </item>
-    
-    <item>
-      <title>如何使用typora编写Hugo draft</title>
-      <link>https://hgfkeep.github.io/posts/how-to-write-draft-in-hugo/</link>
-      <pubDate>Tue, 25 Jun 2019 16:33:26 +0800</pubDate>
-      
-      <guid>https://hgfkeep.github.io/posts/how-to-write-draft-in-hugo/</guid>
-      <description>&lt;p&gt;本文主要讲解如何使用typora编写hugo 文章，达到本地编辑实时预览，和真正部署的结果一致。&lt;/p&gt;</description>
     </item>
     
     <item>
