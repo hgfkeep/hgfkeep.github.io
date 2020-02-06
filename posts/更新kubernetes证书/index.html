@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="heguangfu">
+    <meta name="description" content="一条河流分割了过去和未来">
+    <meta name="keywords" content="dev,designer">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用hugo创建博客"/>
+<meta name="twitter:description" content="合理有效的使用typora编辑器编写hugo文章"/>
+
+    <meta property="og:title" content="使用hugo创建博客" />
+<meta property="og:description" content="合理有效的使用typora编辑器编写hugo文章" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hgfkeep.github.io/posts/%E6%9B%B4%E6%96%B0kubernetes%E8%AF%81%E4%B9%A6/" />
+<meta property="article:published_time" content="2019-06-25T16:33:26&#43;08:00"/>
+<meta property="article:modified_time" content="2019-06-25T16:33:26&#43;08:00"/>
+
+
+    
+      <base href="https://hgfkeep.github.io/posts/%E6%9B%B4%E6%96%B0kubernetes%E8%AF%81%E4%B9%A6/">
+    
+    <title>
+  使用hugo创建博客 · HGFKEEP
+</title>
+
+    
+      <link rel="canonical" href="https://hgfkeep.github.io/posts/%E6%9B%B4%E6%96%B0kubernetes%E8%AF%81%E4%B9%A6/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://hgfkeep.github.io/css/coder.min.8250817d137d64c86ccdb5c74bfdfe88dab7a379d377512a5239dc149ac33dc2.css" integrity="sha256-glCBfRN9ZMhszbXHS/3&#43;iNq3o3nTd1EqUjncFJrDPcI=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://hgfkeep.github.io/css/code.css" />
+    
+      <link rel="stylesheet" href="https://hgfkeep.github.io/css/custom.css" />
+    
+
+    
+    
+    <link rel="icon" type="image/png" href="https://hgfkeep.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://hgfkeep.github.io/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.55.6" />
+  </head>
+
+  <body class=" ">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://hgfkeep.github.io">
+      HGFKEEP
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/about/">关于</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/posts/">博客</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/categories/">分类</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/series/">系列</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/flag/">目标</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://hgfkeep.github.io/contact/">联系我</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">使用hugo创建博客</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-06-25T16:33:26&#43;08:00'>
+                2019-06-25
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              2 分钟阅读时间
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://hgfkeep.github.io/categories/markdown/">markdown</a>
+      <span class="separator">•</span>
+    <a href="https://hgfkeep.github.io/categories/%E5%B7%A5%E5%85%B7/">工具</a></div>
+
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://hgfkeep.github.io/tags/markdown/">markdown</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+
+<h1 id="更新kubernetes-过期证书">更新kubernetes 过期证书</h1>
+
+<p>kubeadm 版本在kubernetes 1.15 版本 提供了强大的证书管理功能，本文章适用于kubernetes1.15以下版本（文章中kubernetes版本是1.13.2）。</p>
+
+<blockquote>
+<p>1.15 版本的证书管理相关文档：
+1. <a href="https://kubernetes.io/zh/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/">官方文档-使用 kubeadm 进行证书管理</a>
+2. [官方文档-kubeadm alpha 使用说明]9<a href="https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-alpha/)">https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-alpha/)</a></p>
+</blockquote>
+
+<p>查看证书有效期方法：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep <span style="color:#0ff;font-weight:bold">&#39; Not &#39;</span></code></pre></div>
+<blockquote>
+<p>⚠️ kubeadm 默认生成的<strong>ca证书有效期是10年</strong>，其<strong>他证书（如etcd证书，apiserver证书）有效期均为1年</strong>。</p>
+</blockquote>
+
+<h2 id="更新证书和配置">更新证书和配置</h2>
+
+<p>整体思路：
+1. 备份：在进行证书更新前，<strong>建议备份<code>/etc/kubernetes</code></strong>，防止操作失误。
+2. 更新证书：使用<code>kubeadm alpha certs renew</code>重新生成证书。<em>仅更新<code>***.key</code>文件，需要原始的crt文件才能生成对应的key文件。</em>
+3. 更新配置：使用<code>kubeadm init phase kubeconfig all --config ${kubeadm.yaml配置文件}</code>或者<code>kubeadm alpha kubeconfig user</code> 命令。</p>
+
+<blockquote>
+<p>⚠️ 不同版本的kubeadm对于证书renew的命令有细微的差异，具体情况需要依据已经安装的kubeadm来判断。通过命令行<code>kubeadm alpha certs renew --help</code>输出类似如下信息：
+<img src="https://i.loli.net/2020/02/05/a94nSIQRHYiorU2.png" alt="image.png" /></p>
+</blockquote>
+
+<p>证书更新策略：
+* 单主节点：可以直接运行<code>kubeadm alpha certs renew all --config kubeadm.yaml</code>完成证书更新。然后替换kubelet配置
+* 多主节点：建议使用原ca证书（有效期10年），每个组件（etcd、apiserver 等）单独更新。</p>
+
+<h2 id="多master节点证书更新">多master节点证书更新</h2>
+
+<h3 id="备份原始配置和证书">备份原始配置和证书</h3>
+
+<p>所有master节点运行命令：<code>cp -r /etc/kubernetes /home/heguangfu/kubernetes</code></p>
+
+<h3 id="更新证书">更新证书</h3>
+
+<p>所有master节点依次完成如下命令：</p>
+
+<ul>
+<li>etcd 心跳证书：<code>kubeadm alpha certs renew  etcd-healthcheck-client --config kubeadm-config.ict15.yaml</code></li>
+<li>etcd peer证书：<code>kubeadm alpha certs renew  etcd-peer --config kubeadm-config.ict15.yaml</code></li>
+<li>etcd server证书：<code>kubeadm alpha certs renew  etcd-server --config kubeadm-config.ict15.yaml</code></li>
+<li>front-proxy-client 证书：<code>kubeadm alpha certs renew  front-proxy-client  --config kubeadm-config.ict15.yaml</code></li>
+<li>apiserver-etcd-client 证书<code>kubeadm alpha certs renew  apiserver-etcd-client  --config kubeadm-config.ict15.yaml</code></li>
+<li>apiserver-kubelet-client 证书<code>kubeadm alpha certs renew  apiserver-kubelet-client   --config kubeadm-config.ict15.yaml</code></li>
+<li>apiserver 证书<code>kubeadm alpha certs renew  apiserver    --config kubeadm-config.ict15.yaml</code></li>
+</ul>
+
+<blockquote>
+<p>⚠️ 不同的master节点使用的kubeadm配置有细微的差异，执行更新证书是，每个master在<code>--config</code>后面使用原来集群创建时，当前master对应的kubeadm配置文件。</p>
+</blockquote>
+
+<h3 id="更新配置">更新配置</h3>
+
+<p>所有master节点，在<strong>更新完证书后</strong>，使用<code>kubeadm init phase kubeconfig all --config ${kubeadm.yaml配置文件}</code>更新kubernetes 配置</p>
+
+<h3 id="验证集群状态">验证集群状态</h3>
+
+<p>清理前次的kubectl权限信息：<code>rm -rf $HOME/.kube</code>。</p>
+
+<p>重新配置kubectl权限信息：</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown <span style="color:#fff;font-weight:bold">$(</span>id -u<span style="color:#fff;font-weight:bold">)</span>:<span style="color:#fff;font-weight:bold">$(</span>id -g<span style="color:#fff;font-weight:bold">)</span> $HOME/.kube/config</code></pre></div>
+<ol>
+<li>验证etcd：查看etcd中某个节点的docker日志，日志中所有etcd peer均active且加入到同一个集群</li>
+<li>验证kubernetes 集群：运行<code>kubectl cluster-info</code>和<code>kubectl get nodes</code> 符合预期。</li>
+<li>确性kubernetes 系统相关的服务运行正常(核心是<code>kube-apiserver</code>,<code>kube-controller-manager</code>,<code>kube-proxy</code>, <code>kube-flannel</code>)：<code>kubectl get pods -n kube-system</code></li>
+<li>检查pod的运行状态：<code>kubectl get pods --all-namespaces</code>。</li>
+</ol>
+
+<h2 id="可能的问题">可能的问题</h2>
+
+<ol>
+<li><code>Part of the existing bootstrap client certificate is expired: 2020-01-19 15:10:17 +0000 UTC</code>：<strong>确认全部证书更新，并且证书更新好后，更新了kubernetes配置</strong></li>
+<li>api server日志：<code>Unable to authenticate the request due to an error: [x509: certificate has expired or is not yet valid, x509: certificate has expired or is not yet valid]</code>。可能原因有：证书过期；证书部分更新；master上包含了代理配置，导致对apiserver的请求走了代理，证书认证通不过（运行<code>unset http_proxy;unset ftp_proxy;unset socks_proxy;unset https_proxy</code>，取消代理配置）。</li>
+</ol>
+
+      </div>
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hgfkeep" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+      <p><div style='padding:2px'><div style='font-weight: bold;'>遇见你是我的幸运-jxn❤️</div><br />感谢阅读，如果有问题请您留言<br /></div><div style=''><img src='https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png'> </div></p>
+    
+     © 2020
+    
+       · 
+      技术支持 <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+
+  </body>
+
+</html>

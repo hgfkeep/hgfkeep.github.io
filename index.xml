@@ -95,6 +95,20 @@ external helpers支持情况 各类型文件后缀主持如下：
     </item>
     
     <item>
+      <title>使用hugo创建博客</title>
+      <link>https://hgfkeep.github.io/posts/%E6%9B%B4%E6%96%B0kubernetes%E8%AF%81%E4%B9%A6/</link>
+      <pubDate>Tue, 25 Jun 2019 16:33:26 +0800</pubDate>
+      
+      <guid>https://hgfkeep.github.io/posts/%E6%9B%B4%E6%96%B0kubernetes%E8%AF%81%E4%B9%A6/</guid>
+      <description>更新kubernetes 过期证书 kubeadm 版本在kubernetes 1.15 版本 提供了强大的证书管理功能，本文章适用于kubernetes1.15以下版本（文章中kubernetes版本是1.13.2）。
+ 1.15 版本的证书管理相关文档： 1. 官方文档-使用 kubeadm 进行证书管理 2. [官方文档-kubeadm alpha 使用说明]9https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-alpha/)
+ 查看证书有效期方法：
+openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep &amp;#39; Not &amp;#39;  ⚠️ kubeadm 默认生成的ca证书有效期是10年，其他证书（如etcd证书，apiserver证书）有效期均为1年。
+ 更新证书和配置 整体思路： 1. 备份：在进行证书更新前，建议备份/etc/kubernetes，防止操作失误。 2. 更新证书：使用kubeadm alpha certs renew重新生成证书。仅更新***.key文件，需要原始的crt文件才能生成对应的key文件。 3. 更新配置：使用kubeadm init phase kubeconfig all --config ${kubeadm.yaml配置文件}或者kubeadm alpha kubeconfig user 命令。
+ ⚠️ 不同版本的kubeadm对于证书renew的命令有细微的差异，具体情况需要依据已经安装的kubeadm来判断。通过命令行kubeadm alpha certs renew --help输出类似如下信息：  证书更新策略： * 单主节点：可以直接运行kubeadm alpha certs renew all --config kubeadm.</description>
+    </item>
+    
+    <item>
       <title>如何使用typora编写Hugo draft</title>
       <link>https://hgfkeep.github.io/posts/how-to-write-draft-in-hugo/</link>
       <pubDate>Tue, 25 Jun 2019 16:33:26 +0800</pubDate>
