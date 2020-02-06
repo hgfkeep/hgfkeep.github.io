@@ -1,12 +1,12 @@
 ---
-title: "使用hugo创建博客"
+title: "更新kubernetes 过期证书"
 date: 2019-06-25T16:33:26+08:00
 lastmod: 2019-06-25T16:33:26+08:00
 draft: false
-keywords: [markdown]
-description: "合理有效的使用typora编辑器编写hugo文章"
-tags: [markdown]
-categories: [markdown, 工具]
+keywords: [kubernetes]
+description: "kubernetes 证书默认是1年的期限，本文描述了证书到期后更新证书的方法， 本方法适用于kubernetes1.15以下版本。后续可以考虑自动证书更新"
+tags: [kubernetes]
+categories: [kubernetes]
 author: "heguangfu"
 
 # You can also close(false) or open(true) something for this content.
