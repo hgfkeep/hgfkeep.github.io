@@ -1,7 +1,7 @@
 ---
 title: "更新kubernetes 过期证书"
-date: 2019-06-25T16:33:26+08:00
-lastmod: 2019-06-25T16:33:26+08:00
+date: 2020-01-25T16:33:26+08:00
+lastmod: 2020-01-25T16:33:26+08:00
 draft: false
 keywords: [kubernetes]
 description: "kubernetes 证书默认是1年的期限，本文描述了证书到期后更新证书的方法， 本方法适用于kubernetes1.15以下版本。后续可以考虑自动证书更新"
@@ -46,6 +46,7 @@ typora-root-url: ../../static
 kubeadm 版本在kubernetes 1.15 版本 提供了强大的证书管理功能，本文章适用于kubernetes1.15以下版本（文章中kubernetes版本是1.13.2）。
 
 > 1.15 版本的证书管理相关文档：
+
 > 1. [官方文档-使用 kubeadm 进行证书管理](https://kubernetes.io/zh/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/)
 > 2. [官方文档-kubeadm alpha 使用说明]9https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-alpha/)
 
