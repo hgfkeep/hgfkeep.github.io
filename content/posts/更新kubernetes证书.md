@@ -92,7 +92,7 @@ openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ' Not '
 * apiserver-kubelet-client 证书`kubeadm alpha certs renew  apiserver-kubelet-client   --config kubeadm-config.ict15.yaml`
 * apiserver 证书`kubeadm alpha certs renew  apiserver    --config kubeadm-config.ict15.yaml`
 
-> ⚠️ 不同的master节点使用的kubeadm配置有细微的差异，执行更新证书是，每个master在`--config`后面使用原来集群创建时，当前master对应的kubeadm配置文件。
+⚠️ 不同的master节点使用的kubeadm配置有细微的差异，执行更新证书是，每个master在`--config`后面使用原来集群创建时，当前master对应的kubeadm配置文件。
 
 
 ### 更新配置
