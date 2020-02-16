@@ -153,25 +153,27 @@
 
 <p>查看证书有效期方法：</p>
 <div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep <span style="color:#0ff;font-weight:bold">&#39; Not &#39;</span></code></pre></div>
-<blockquote>
 <p>⚠️ kubeadm 默认生成的<strong>ca证书有效期是10年</strong>，其<strong>他证书（如etcd证书，apiserver证书）有效期均为1年</strong>。</p>
-</blockquote>
 
 <h2 id="更新证书和配置">更新证书和配置</h2>
 
-<p>整体思路：
-1. 备份：在进行证书更新前，<strong>建议备份<code>/etc/kubernetes</code></strong>，防止操作失误。
-2. 更新证书：使用<code>kubeadm alpha certs renew</code>重新生成证书。<em>仅更新<code>***.key</code>文件，需要原始的crt文件才能生成对应的key文件。</em>
-3. 更新配置：使用<code>kubeadm init phase kubeconfig all --config ${kubeadm.yaml配置文件}</code>或者<code>kubeadm alpha kubeconfig user</code> 命令。</p>
+<p>整体思路：</p>
 
-<blockquote>
+<ol>
+<li>备份：在进行证书更新前，<strong>建议备份<code>/etc/kubernetes</code></strong>，防止操作失误。</li>
+<li>更新证书：使用<code>kubeadm alpha certs renew</code>重新生成证书。<em>仅更新<code>***.key</code>文件，需要原始的crt文件才能生成对应的key文件。</em></li>
+<li>更新配置：使用<code>kubeadm init phase kubeconfig all --config ${kubeadm.yaml配置文件}</code>或者<code>kubeadm alpha kubeconfig user</code> 命令。</li>
+</ol>
+
 <p>⚠️ 不同版本的kubeadm对于证书renew的命令有细微的差异，具体情况需要依据已经安装的kubeadm来判断。通过命令行<code>kubeadm alpha certs renew --help</code>输出类似如下信息：
 <img src="https://i.loli.net/2020/02/05/a94nSIQRHYiorU2.png" alt="image.png" /></p>
-</blockquote>
 
-<p>证书更新策略：
-* 单主节点：可以直接运行<code>kubeadm alpha certs renew all --config kubeadm.yaml</code>完成证书更新。然后替换kubelet配置
-* 多主节点：建议使用原ca证书（有效期10年），每个组件（etcd、apiserver 等）单独更新。</p>
+<p>证书更新策略：</p>
+
+<ul>
+<li>单主节点：可以直接运行<code>kubeadm alpha certs renew all --config kubeadm.yaml</code>完成证书更新。然后替换kubelet配置</li>
+<li>多主节点：建议使用原ca证书（有效期10年），每个组件（etcd、apiserver 等）单独更新。</li>
+</ul>
 
 <h2 id="多master节点证书更新">多master节点证书更新</h2>
 
